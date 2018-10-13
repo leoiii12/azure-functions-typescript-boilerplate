@@ -1,0 +1,11 @@
+{
+  "azureFunctions.projectRuntime": "~2",
+  "azureFunctions.projectLanguage": "JavaScript",
+  "azureFunctions.templateFilter": "Verified",
+  "azureFunctions.deploySubpath": ".",
+  "azureFunctions.preDeployTask": "installExtensions",
+  "csharp.suppressDotnetRestoreNotification": true,
+  "omnisharp.autoStart": false,
+  "importSorter.generalConfiguration.sortOnBeforeSave": true,
+  "importSorter.importStringConfiguration.trailingComma": "multiLine"
+}

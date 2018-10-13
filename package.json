@@ -1,0 +1,35 @@
+{
+  "name": "azure-functions-typescript-boilerplate",
+  "private": true,
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "migrations:generate": "ts-node ./node_modules/.bin/typeorm migration:generate -n ",
+    "migrations:run": "ts-node ./node_modules/.bin/typeorm migration:run",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "devDependencies": {
+    "del": "^3.0.0",
+    "gulp": "^4.0.0",
+    "gulp-filter": "^5.1.0",
+    "gulp-sourcemaps": "^2.6.4",
+    "gulp-terser": "^1.1.5",
+    "gulp-typescript": "^5.0.0-alpha.3",
+    "tslint": "^5.11.0",
+    "tslint-config-airbnb": "^5.11.0",
+    "typescript": "^3.1.2"
+  },
+  "dependencies": {
+    "@types/bcrypt": "^3.0.0",
+    "@types/jsonwebtoken": "^7.2.8",
+    "bcrypt": "^3.0.1",
+    "class-transformer": "^0.1.9",
+    "class-transformer-validator": "^0.6.0",
+    "class-validator": "^0.9.1",
+    "jsonwebtoken": "^8.3.0",
+    "mssql": "^4.2.1",
+    "reflect-metadata": "^0.1.12",
+    "typeorm": "^0.2.7"
+  }
+}

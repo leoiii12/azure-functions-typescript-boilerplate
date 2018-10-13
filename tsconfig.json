@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "target": "es2017",
+    "module": "commonjs",
+    "noImplicitAny": true,
+    "strict": true,
+    "noImplicitThis": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "strictPropertyInitialization": false,
+    "lib": [
+      "es2017"
+    ],
+    "baseUrl": "src",
+    "paths": {
+      "@boilerplate/entity": [
+        "entity/index"
+      ],
+      "@boilerplate/migration": [
+        "migration/index"
+      ],
+      "@boilerplate/util": [
+        "util/index"
+      ]
+    }
+  }
+}

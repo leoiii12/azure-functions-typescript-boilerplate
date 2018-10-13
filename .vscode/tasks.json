@@ -1,0 +1,69 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Run Functions Host",
+      "identifier": "runFunctionsHost",
+      "type": "shell",
+      "command": "func host start",
+      "isBackground": true,
+      "presentation": {
+        "reveal": "always"
+      },
+      "problemMatcher": "$func-watch",
+      "options": {
+        "env": {
+          "languageWorkers:node:arguments": "--inspect=5858"
+        },
+        "cwd": "./dist"
+      },
+      "dependsOn": [
+        "restoreExtensions"
+      ]
+    },
+    {
+      "label": "restoreExtensions",
+      "identifier": "restoreExtensions",
+      "command": "dotnet restore",
+      "type": "shell",
+      "presentation": {
+        "reveal": "silent"
+      },
+      "options": {
+        "cwd": "./dist"
+      },
+      "dependsOn": [
+        "installExtensions"
+      ]
+    },
+    {
+      "label": "installExtensions",
+      "identifier": "installExtensions",
+      "command": "func extensions install",
+      "type": "shell",
+      "presentation": {
+        "reveal": "silent"
+      },
+      "options": {
+        "cwd": "./dist"
+      },
+      "dependsOn": [
+        "gulp"
+      ]
+    },
+    {
+      "label": "gulp",
+      "identifier": "gulp",
+      "command": "gulp",
+      "type": "shell",
+      "presentation": {
+        "reveal": "always"
+      },
+      "options": {
+        "env": {
+          "NODE_ENV": "Development",
+        }
+      }
+    }
+  ]
+}
