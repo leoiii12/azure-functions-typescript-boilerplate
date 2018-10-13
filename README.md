@@ -1,12 +1,12 @@
 # Azure Functions Typescript Boilerplate
 
 ## Packages
-[typeorm](https://www.npmjs.com/package/typeorm), typescript ORM
-[bcrypt](https://www.npmjs.com/package/bcrypt), password encryption
+[typeorm](https://www.npmjs.com/package/typeorm), typescript ORM<br>
+[bcrypt](https://www.npmjs.com/package/bcrypt), password encryption<br>
 [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken), JWT token authentication, X-Authorization
 
 ## Configs
-`src/local.settings.json` for `AUTH_SECRET`
+`src/local.settings.json` for `AUTH_SECRET`<br>
 `ormconfig.json`
 
 ## Development with VSCode
