@@ -3,7 +3,7 @@
 ## Packages
 [typeorm](https://www.npmjs.com/package/typeorm), typescript ORM<br>
 [bcrypt](https://www.npmjs.com/package/bcrypt), password encryption<br>
-[jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken), JWT token authentication, X-Authorization<br>
+[jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken), JWT token authentication, X-Authorization: Bearer <your-token><br>
 [tslint](https://www.npmjs.com/package/tslint)<br>
 [parcel-bundler](https://www.npmjs.com/package/parcel-bundler), bundle your functions to decrease the network overheads for faster [cold start](https://blogs.msdn.microsoft.com/appserviceteam/2018/02/07/understanding-serverless-cold-start/)<br>
 [class-transformer-validator](https://www.npmjs.com/package/parcel-bundler), validate the models
