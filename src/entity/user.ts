@@ -5,7 +5,7 @@ import {
 import { DeviceHistory } from './device-history';
 import { Role } from './role';
 
-@Entity()
+@Entity('user')
 export class User {
 
   @PrimaryGeneratedColumn('uuid')

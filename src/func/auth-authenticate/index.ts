@@ -1,4 +1,4 @@
-import { compare } from 'bcrypt';
+import { compare } from 'bcryptjs';
 import { transformAndValidate } from 'class-transformer-validator';
 import { IsDefined, IsMobilePhone } from 'class-validator';
 import { sign } from 'jsonwebtoken';
@@ -13,6 +13,10 @@ class AuthenticateInput {
 
   @IsDefined()
   password: string;
+}
+
+class AuthenticateOutput {
+  constructor(public accessToken: string) { }
 }
 
 export async function run(context: any, req: any) {
@@ -51,8 +55,6 @@ export async function run(context: any, req: any) {
 
       const token = await sign(payload, secret, options);
 
-      return {
-        accessToken: token,
-      };
+      return new AuthenticateOutput(token);
     });
 }

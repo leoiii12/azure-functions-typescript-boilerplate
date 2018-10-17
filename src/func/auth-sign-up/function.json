@@ -2,7 +2,7 @@
   "disabled": false,
   "bindings": [
     {
-      "authLevel": "function",
+      "authLevel": "anonymous",
       "route": "Auth/SignUp",
       "type": "httpTrigger",
       "direction": "in",

@@ -1,9 +1,12 @@
-const gulp = require("gulp");
 const del = require("del");
+const fs = require("fs");
+
+const gulp = require("gulp");
 const ts = require("gulp-typescript");
 const sourcemaps = require("gulp-sourcemaps");
-const terser = require("gulp-terser");
 const filter = require("gulp-filter");
+const parcelBundler = require("parcel-bundler");
+const glob = require("glob-promise");
 
 const isProd = process.env.NODE_ENV === "Development" ? false : true;
 
@@ -19,8 +22,7 @@ function scripts() {
       .src(["src/**/*.ts"])
       .pipe(filter(["src/entity/**/*.ts", "src/util/**/*.ts"]))
       .pipe(tsProject())
-      .pipe(terser())
-      .pipe(gulp.dest("dist/node_modules/@boilerplate"));
+      .pipe(gulp.dest("node_modules/@boilerplate"));
   }
 
   return gulp
@@ -29,10 +31,10 @@ function scripts() {
     .pipe(sourcemaps.init())
     .pipe(tsProject())
     .pipe(sourcemaps.mapSources(function (sourcePath, file) {
-      return "../../../../src/" + sourcePath;
+      return "../../../src/" + sourcePath;
     }))
     .pipe(sourcemaps.write("."))
-    .pipe(gulp.dest("dist/node_modules/@boilerplate"));
+    .pipe(gulp.dest("node_modules/@boilerplate"));
 }
 
 function functions() {
@@ -42,7 +44,6 @@ function functions() {
     return gulp
       .src(["src/func/**/*.ts"])
       .pipe(tsProject())
-      .pipe(terser())
       .pipe(gulp.dest("dist"));
   }
 
@@ -64,9 +65,48 @@ function funcDefs() {
 }
 
 function hostDefs() {
+  let src = ["src/host.json", "src/extensions.csproj", "ormconfig.json"];
+
+  if (isProd) {
+    src = src.concat(["src/package.json"]);
+  } else {
+    src = src.concat(["src/local.settings.json"]);
+  }
+
   return gulp
-    .src(["src/host.json", "src/local.settings.json", "src/extensions.csproj"])
+    .src(src)
     .pipe(gulp.dest("dist"));
+}
+
+async function funcPacks() {
+  let entries = await glob("dist/*/index.js");
+
+  if (isProd) {
+    for (let entry of entries) {
+      const outDir = entry.replace("/index.js", "");
+      const options = {
+        outDir: outDir,
+        outFile: "index.js",
+        watch: false,
+        cache: true,
+        cacheDir: ".cache",
+        contentHash: false,
+        minify: true,
+        scopeHoist: false,
+        target: "node",
+        bundleNodeModules: true,
+        sourceMaps: false,
+        detailedReport: false,
+        logLevel: 2
+      };
+
+      const bundler = new parcelBundler(entry, options);
+
+      const bundle = await bundler.bundle();
+
+      fs.writeFileSync(outDir + "/index.js.bundle", Array.from(bundle.assets).map(a => `${a.name},${a.bundledSize}`).join('\n'));
+    }
+  }
 }
 
 exports.clean = clean;
@@ -75,7 +115,16 @@ exports.functions = functions;
 exports.funcDefs = funcDefs;
 exports.hostDefs = hostDefs;
 
-const build = gulp.series(clean, gulp.parallel(scripts, functions, funcDefs, hostDefs));
+const build = gulp.series(
+  clean,
+  gulp.parallel(
+    scripts,
+    functions,
+    funcDefs,
+    hostDefs
+  ),
+  funcPacks
+);
 
 gulp.task("build", build);
 gulp.task("default", build);

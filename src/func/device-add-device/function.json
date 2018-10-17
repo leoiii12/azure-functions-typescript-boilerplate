@@ -3,7 +3,7 @@
   "bindings": [
     {
       "authLevel": "anonymous",
-      "route": "Device/GetDevices",
+      "route": "Device/AddDevice",
       "type": "httpTrigger",
       "direction": "in",
       "name": "req",

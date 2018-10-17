@@ -3,7 +3,7 @@ import { Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { DeviceHistory } from './device-history';
 import { GeneralDevice } from './general-device';
 
-@Entity()
+@Entity('device')
 export class Device {
 
   @PrimaryGeneratedColumn('uuid')

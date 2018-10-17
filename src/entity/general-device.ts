@@ -2,7 +2,7 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 import { Device } from './device';
 
-@Entity()
+@Entity('general_device')
 export class GeneralDevice {
 
   @PrimaryGeneratedColumn('uuid')

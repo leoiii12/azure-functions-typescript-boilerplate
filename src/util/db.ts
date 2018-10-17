@@ -1,4 +1,6 @@
-import { Connection, createConnection } from 'typeorm';
+import { Connection, createConnection, getConnectionOptions } from 'typeorm';
+
+import { Device, DeviceHistory, GeneralDevice, Role, User } from '@boilerplate/entity';
 
 export namespace DB {
 
@@ -9,7 +11,19 @@ export namespace DB {
       return connection;
     }
 
-    connection = await createConnection('default-dist');
+    const connectionOptions = await getConnectionOptions('default-dist');
+
+    Object.assign(connectionOptions, {
+      entities: [
+        DeviceHistory,
+        Device,
+        GeneralDevice,
+        Role,
+        User,
+      ],
+    });
+
+    connection = await createConnection(connectionOptions);
 
     return connection;
   }

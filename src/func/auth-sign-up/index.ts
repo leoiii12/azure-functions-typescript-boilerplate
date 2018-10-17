@@ -1,4 +1,4 @@
-import { hash } from 'bcrypt';
+import { hash } from 'bcryptjs';
 import { transformAndValidate } from 'class-transformer-validator';
 import { IsDefined, IsMobilePhone } from 'class-validator';
 

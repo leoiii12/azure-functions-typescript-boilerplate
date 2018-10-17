@@ -9,6 +9,10 @@ class AddDeviceInput {
   generalDeviceId: string;
 }
 
+class AddDeviceOutput {
+  constructor(public device: DeviceDto) { }
+}
+
 export async function run(context: any, req: any) {
   context.res = await Function.run(
     context,
@@ -26,9 +30,9 @@ export async function run(context: any, req: any) {
 
       device = await generalDeviceRepository.save(device);
 
-      return DeviceDto.from(device);
+      return new AddDeviceOutput(DeviceDto.from(device));
     },
     Authorized.permit({
-      anyRoles: [Role.Users, Role.Admins],
+      anyRoles: [Role.Nurses],
     }));
 }

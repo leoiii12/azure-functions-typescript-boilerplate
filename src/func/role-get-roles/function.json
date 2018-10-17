@@ -2,8 +2,8 @@
   "disabled": false,
   "bindings": [
     {
-      "authLevel": "function",
-      "route": "Device/AddDevice",
+      "authLevel": "anonymous",
+      "route": "Role/GetRoles",
       "type": "httpTrigger",
       "direction": "in",
       "name": "req",

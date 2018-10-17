@@ -35,9 +35,6 @@
     "logging": false,
     "options": {
       "encrypt": true
-    },
-    "entities": [
-      "node_modules/@boilerplate/entity/*.js"
-    ]
+    }
   }
 ]

@@ -1,6 +1,10 @@
 import { Device, DeviceDto, Role } from '@boilerplate/entity';
 import { Authorized, DB, Function } from '@boilerplate/util';
 
+class GetDevicesOutput {
+  constructor(public devices: DeviceDto[]) { }
+}
+
 export async function run(context: any) {
   context.res = await Function.run(
     context,
@@ -10,9 +14,9 @@ export async function run(context: any) {
 
       const devices = await deviceRepository.find({ relations: ['generalDevice'] });
 
-      return devices.map(DeviceDto.from);
+      return new GetDevicesOutput(devices.map(DeviceDto.from));
     },
     Authorized.permit({
-      anyRoles: [Role.Users],
+      anyRoles: [Role.Patients, Role.Nurses, Role.Doctors, Role.Instructors],
     }));
 }
