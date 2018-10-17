@@ -78,9 +78,9 @@ export async function run(context: any, req: any) {
       const connection = await DB.getConnection();
       const generalDeviceRepository = connection.getRepository(GeneralDevice);
 
+      // 9. API consumer will see your exception message defined here
       const generalDevice = await generalDeviceRepository.findOne(input.generalDeviceId);
       if (!generalDevice) throw new UserFriendlyError('The GeneralDevice does not exist');
-      // 9. throw a UserFriendlyError
 
       // 10. Create a new entity object
       let device = new Device();
