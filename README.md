@@ -10,7 +10,7 @@
 
 ## Configs
 `src/local.settings.json` for `AUTH_SECRET`<br>
-`ormconfig.json`
+`ormconfig.json` for your DB
 
 ## Default functions
 `src/func/hello-world`, a great start<br>
