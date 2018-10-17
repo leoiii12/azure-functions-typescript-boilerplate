@@ -13,12 +13,12 @@
 `ormconfig.json`
 
 ## Default functions
-`src/func/hello-world`, a great start
-`src/func/auth-sign-up`, a sign up demos
-`src/func/auth-authenticate`, a jwt authenticate demo
-`src/func/role-get-roles`, a jwt authorization demo
-`src/func/device-get-devices`
-`src/func/device-add-device`
+`src/func/hello-world`, a great start<br>
+`src/func/auth-sign-up`, a sign up demos<br>
+`src/func/auth-authenticate`, a jwt authenticate demo<br>
+`src/func/role-get-roles`, a jwt authorization demo<br>
+`src/func/device-get-devices`<br>
+`src/func/device-add-device`<br>
 
 ## Getting started 
 
