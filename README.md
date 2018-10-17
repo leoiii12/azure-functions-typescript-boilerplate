@@ -5,7 +5,7 @@
 [bcrypt](https://www.npmjs.com/package/bcrypt), password encryption<br>
 [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken), JWT token authentication, X-Authorization<br>
 [tslint](https://www.npmjs.com/package/tslint)<br>
-[parcel-bundler](https://www.npmjs.com/package/parcel-bundler), bundle your functions to decrease the network overheads for [cold start](https://blogs.msdn.microsoft.com/appserviceteam/2018/02/07/understanding-serverless-cold-start/)<br>
+[parcel-bundler](https://www.npmjs.com/package/parcel-bundler), bundle your functions to decrease the network overheads for faster [cold start](https://blogs.msdn.microsoft.com/appserviceteam/2018/02/07/understanding-serverless-cold-start/)<br>
 [class-transformer-validator](https://www.npmjs.com/package/parcel-bundler), validate the models
 
 ## Configs
@@ -41,7 +41,7 @@ export async function run(context: any) {
       // 3. return your output
       return new GetRolesOutput(roles);
     },
-    // 4. 
+    // 4. You can define the permitted roles to this function 
     Authorized.permit({
       anyRoles: [Role.Patients, Role.Nurses, Role.Doctors, Role.Instructors],
     }));
