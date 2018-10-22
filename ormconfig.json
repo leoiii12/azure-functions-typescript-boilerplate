@@ -36,5 +36,11 @@
     "options": {
       "encrypt": true
     }
+  },
+  {
+    "name": "default-test",
+    "type": "sqlite",
+    "database": ":memory:",
+    "logging": true
   }
 ]

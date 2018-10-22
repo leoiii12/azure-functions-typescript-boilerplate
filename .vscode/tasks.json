@@ -18,13 +18,13 @@
         "cwd": "./dist"
       },
       "dependsOn": [
-        "restoreExtensions"
+        "restoreExtensionsDev"
       ]
     },
     {
-      "label": "restoreExtensions",
-      "identifier": "restoreExtensions",
-      "command": "dotnet restore",
+      "label": "restoreExtensionsDev",
+      "identifier": "restoreExtensionsDev",
+      "command": "func extensions install && dotnet restore",
       "type": "shell",
       "presentation": {
         "reveal": "silent"
@@ -33,36 +33,41 @@
         "cwd": "./dist"
       },
       "dependsOn": [
-        "installExtensions"
+        "buildDev"
       ]
     },
     {
-      "label": "installExtensions",
-      "identifier": "installExtensions",
-      "command": "func extensions install",
-      "type": "shell",
-      "presentation": {
-        "reveal": "silent"
-      },
-      "options": {
-        "cwd": "./dist"
-      },
-      "dependsOn": [
-        "gulp"
-      ]
-    },
-    {
-      "label": "gulp",
-      "identifier": "gulp",
-      "command": "gulp",
+      "label": "buildDev",
+      "identifier": "buildDev",
+      "command": "npm run build:dev",
       "type": "shell",
       "presentation": {
         "reveal": "always"
+      }
+    },
+
+    {
+      "label": "restoreExtensionsProd",
+      "identifier": "restoreExtensionsProd",
+      "command": "func extensions install && dotnet restore",
+      "type": "shell",
+      "presentation": {
+        "reveal": "silent"
       },
       "options": {
-        "env": {
-          "NODE_ENV": "Development",
-        }
+        "cwd": "./dist"
+      },
+      "dependsOn": [
+        "buildProd"
+      ]
+    },
+    {
+      "label": "buildProd",
+      "identifier": "buildProd",
+      "command": "npm run build:prod",
+      "type": "shell",
+      "presentation": {
+        "reveal": "always"
       }
     }
   ]

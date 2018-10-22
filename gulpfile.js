@@ -11,7 +11,7 @@ const glob = require("glob-promise");
 const isProd = process.env.NODE_ENV === "Development" ? false : true;
 
 function clean() {
-  return del(["dist"]);
+  return del(["dist", "node_modules/@boilerplate"]);
 }
 
 function scripts() {
@@ -52,7 +52,7 @@ function functions() {
     .pipe(sourcemaps.init())
     .pipe(tsProject())
     .pipe(sourcemaps.mapSources(function (sourcePath, file) {
-      return "../../src/" + sourcePath;
+      return "../../src/func/" + sourcePath;
     }))
     .pipe(sourcemaps.write("."))
     .pipe(gulp.dest("dist"));

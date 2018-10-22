@@ -1,3 +1,6 @@
+export class UnauthorizedError extends Error {
+}
+
 export class UserFriendlyError extends Error {
 
   constructor(message: string) {
@@ -6,4 +9,7 @@ export class UserFriendlyError extends Error {
     this.message = message;
   }
 
+}
+
+export class InternalServerError extends Error {
 }

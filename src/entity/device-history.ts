@@ -9,7 +9,7 @@ export class DeviceHistory {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(tpye => Device, d => d.deviceHistories)
+  @ManyToOne(type => Device, d => d.deviceHistories)
   device: Device;
 
   @Column()
