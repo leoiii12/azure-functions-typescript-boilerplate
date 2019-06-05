@@ -1,36 +1,24 @@
-import { hash } from 'bcryptjs';
 import { verify } from 'jsonwebtoken';
 
 import { User } from '@boilerplate/entity';
+import { authenticate, AuthenticateInput } from '@boilerplate/func';
 import { DB, UnauthorizedError, UserFriendlyError } from '@boilerplate/util';
 
-import { authenticate, AuthenticateInput } from '../../func/auth-authenticate';
-
-const mobilePhone = '61096623';
-const password = '123';
+import { createMockAccounts, init, users } from '../util/mock';
 
 beforeAll(async (done) => {
-  const connection = await DB.getConnection();
-  await connection.synchronize();
-
-  const userRepository = connection.getRepository(User);
-
-  const user = new User();
-  user.mobilePhone = mobilePhone;
-  user.password = await hash(password, 12);
-  user.roles = [];
-
-  await userRepository.insert(user);
+  await init();
+  await createMockAccounts();
 
   done();
 });
 
-describe('authenticate', () => {
+describe('auth-authenticate', () => {
 
-  it('should work when correct password', async () => {
+  it('should work when correct password with mobilePhone', async () => {
     const input = new AuthenticateInput();
-    input.mobilePhone = mobilePhone;
-    input.password = password;
+    input.mobilePhone = users.admin_1.mobilePhone;
+    input.password = users.admin_1.password;
 
     const output = await authenticate(input);
     expect(output).toBeDefined();
@@ -39,16 +27,16 @@ describe('authenticate', () => {
     const userRepository = connection.getRepository(User);
 
     const count = await userRepository.count();
-    expect(count).toBe(1);
+    expect(count).toBe(Object.keys(users).length);
 
     const user = await userRepository.findOneOrFail();
     const decoded = await verify(output.accessToken, process.env.AUTH_SECRET as string) as any;
-    expect(decoded.sub).toBe(user.id);
+    expect(decoded.sub).toBe(user.id.toString());
   });
 
   it('should error when incorrect password', async () => {
     const input = new AuthenticateInput();
-    input.mobilePhone = mobilePhone;
+    input.mobilePhone = users.admin_1.mobilePhone;
     input.password = 'incorrect';
 
     await expect(authenticate(input)).rejects.toThrowError(UnauthorizedError);
@@ -56,7 +44,7 @@ describe('authenticate', () => {
 
   it('should error when incorrect password', async () => {
     const input = new AuthenticateInput();
-    input.mobilePhone = mobilePhone;
+    input.mobilePhone = users.admin_1.mobilePhone;
 
     // tslint:disable-next-line:max-line-length
     input.password = 'incorrectincorrectincorrectincorrectincorrectincorrectincorrectincorrectincorrectincorrectincorrectincorrectincorrectincorrectincorrectincorrectincorrectincorrectincorrectincorrectincorrectincorrectincorrectincorrectincorrectincorrectincorrectincorrectincorrect';
@@ -66,7 +54,7 @@ describe('authenticate', () => {
 
   it('should error when no sign up', async () => {
     const input = new AuthenticateInput();
-    input.mobilePhone = 'incorrect';
+    input.mobilePhone = 'A000000';
     input.password = 'incorrect';
 
     await expect(authenticate(input)).rejects.toThrowError(UserFriendlyError);

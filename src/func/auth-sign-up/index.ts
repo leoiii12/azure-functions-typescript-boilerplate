@@ -1,8 +1,9 @@
 import { hash } from 'bcryptjs';
 import { IsDefined, IsMobilePhone } from 'class-validator';
 
+import { Context } from '@azure/functions';
 import { User } from '@boilerplate/entity';
-import { DB, Func, UserFriendlyError } from '@boilerplate/util';
+import { Authorized, DB, Func, UserFriendlyError } from '@boilerplate/util';
 
 export class SignUpInput {
   @IsDefined()
@@ -32,7 +33,7 @@ export async function signUp(input: SignUpInput) {
   await userRepository.insert(user);
 }
 
-export async function run(context: any, req: any) {
+export async function authSignUpFunc(context: Context) {
   context.res = await Func.run1(
     context,
     signUp,

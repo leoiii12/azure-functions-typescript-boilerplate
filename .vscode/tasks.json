@@ -2,18 +2,20 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Run Functions Host",
-      "identifier": "runFunctionsHost",
+      "label": "runFunctionsHost",
       "type": "shell",
       "command": "func host start",
       "isBackground": true,
       "presentation": {
-        "reveal": "always"
+        "reveal": "always",
+        "clear": true,
+        "panel": "dedicated"
       },
       "problemMatcher": "$func-watch",
       "options": {
         "env": {
-          "languageWorkers:node:arguments": "--inspect=5858"
+          "languageWorkers:node:arguments": "--inspect=5858",
+          "NODE_ENV": "Development"
         },
         "cwd": "./dist"
       },
@@ -23,12 +25,19 @@
     },
     {
       "label": "restoreExtensionsDev",
-      "identifier": "restoreExtensionsDev",
-      "command": "func extensions install && dotnet restore",
+      "command": "dotnet restore",
       "type": "shell",
-      "presentation": {
-        "reveal": "silent"
+      "options": {
+        "cwd": "./dist"
       },
+      "dependsOn": [
+        "runFunExtensionInstallDev"
+      ]
+    },
+    {
+      "label": "runFunExtensionInstallDev",
+      "command": "func extensions install",
+      "type": "shell",
       "options": {
         "cwd": "./dist"
       },
@@ -38,18 +47,27 @@
     },
     {
       "label": "buildDev",
-      "identifier": "buildDev",
       "command": "npm run build:dev",
-      "type": "shell",
-      "presentation": {
-        "reveal": "always"
-      }
+      "type": "shell"
     },
-
+    // Production
     {
       "label": "restoreExtensionsProd",
-      "identifier": "restoreExtensionsProd",
-      "command": "func extensions install && dotnet restore",
+      "command": "dotnet restore",
+      "type": "shell",
+      "presentation": {
+        "reveal": "silent"
+      },
+      "options": {
+        "cwd": "./dist"
+      },
+      "dependsOn": [
+        "runFunExtensionInstallProd"
+      ]
+    },
+    {
+      "label": "runFunExtensionInstallProd",
+      "command": "func extensions install",
       "type": "shell",
       "presentation": {
         "reveal": "silent"
@@ -63,7 +81,6 @@
     },
     {
       "label": "buildProd",
-      "identifier": "buildProd",
       "command": "npm run build:prod",
       "type": "shell",
       "presentation": {

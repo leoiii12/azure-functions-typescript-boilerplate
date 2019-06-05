@@ -28,11 +28,11 @@ export class Authorized {
   }
 
   static permit(config: AuthorizedConfig): Authorized {
-    const authoried = new Authorized();
+    const authorized = new Authorized();
 
-    authoried.config = config;
+    authorized.config = config;
 
-    return authoried;
+    return authorized;
   }
 
 }

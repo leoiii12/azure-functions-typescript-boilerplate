@@ -26,6 +26,12 @@ export class User {
   @UpdateDateColumn()
   updateDate: Date;
 
+  @Column({ nullable: true })
+  tokenVersion: string;
+
+  @Column({ default: true })
+  enabled: boolean = true;
+
   @OneToMany(type => DeviceHistory, d => d.userId)
   deviceHistories: DeviceHistory[];
 

@@ -3,7 +3,6 @@
   "Values": {
     "AzureWebJobsStorage": "",
     "FUNCTIONS_WORKER_RUNTIME": "node",
-    "NODE_OPTIONS": "--inspect=5858",
-    "AUTH_SECRET": "RVlXa10yYWRlQENwfTVWYQ=="
+    "NODE_OPTIONS": "--inspect=5858"
   }
 }

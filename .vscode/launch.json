@@ -7,6 +7,24 @@
       "request": "attach",
       "port": 5858,
       "preLaunchTask": "runFunctionsHost"
+    },
+    {
+      "name": "Jest All",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/.bin/jest",
+      "args": [
+        "--runInBand"
+      ],
+      "env": {
+        "DB_PROFILE": "default-test",
+        "AUTH_SECRET": "secret"
+      },
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "windows": {
+        "program": "${workspaceFolder}/node_modules/jest/bin/jest",
+      }
     }
   ]
 }

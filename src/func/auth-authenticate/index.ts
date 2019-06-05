@@ -2,6 +2,7 @@ import { compare } from 'bcryptjs';
 import { IsDefined, IsMobilePhone } from 'class-validator';
 import { sign } from 'jsonwebtoken';
 
+import { Context } from '@azure/functions';
 import { User } from '@boilerplate/entity';
 import { DB, Func, UnauthorizedError, UserFriendlyError } from '@boilerplate/util';
 
@@ -53,7 +54,7 @@ export async function authenticate(input: AuthenticateInput): Promise<Authentica
   return new AuthenticateOutput(token);
 }
 
-export async function run(context: any) {
+export async function authAuthenticateFunc(context: Context) {
   context.res = await Func.run1(
     context,
     authenticate,

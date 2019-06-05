@@ -25,3 +25,5 @@ appsettings.json
 
 /node_modules
 /dist
+
+/doc/versions/staging.json

@@ -1,5 +1,6 @@
 import { IsDefined } from 'class-validator';
 
+import { Context } from '@azure/functions';
 import { Device, DeviceDto, GeneralDevice, Role } from '@boilerplate/entity';
 import { Authorized, DB, Func, UserFriendlyError } from '@boilerplate/util';
 
@@ -28,7 +29,7 @@ export async function addDevice(input: AddDeviceInput): Promise<AddDeviceOutput>
   return new AddDeviceOutput(DeviceDto.from(device));
 }
 
-export async function run(context: any) {
+export async function deviceAddDeviceFunc(context: Context) {
   context.res = await Func.run1(
     context,
     addDevice,

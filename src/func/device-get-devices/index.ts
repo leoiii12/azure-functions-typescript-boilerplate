@@ -1,3 +1,4 @@
+import { Context } from '@azure/functions';
 import { Device, DeviceDto, Role } from '@boilerplate/entity';
 import { Authorized, DB, Func } from '@boilerplate/util';
 
@@ -15,7 +16,7 @@ export async function getDevice(): Promise<GetDevicesOutput> {
   return new GetDevicesOutput(devices.map(DeviceDto.from));
 }
 
-export async function run(context: any) {
+export async function deviceGetDevicesFunc(context: Context) {
   context.res = await Func.run0(
     context,
     getDevice,

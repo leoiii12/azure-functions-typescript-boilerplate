@@ -23,7 +23,11 @@
       ],
       "@boilerplate/util": [
         "util/index"
+      ],
+      "@boilerplate/func": [
+        "func/index"
       ]
-    }
+    },
+    "skipLibCheck": true,
   }
 }

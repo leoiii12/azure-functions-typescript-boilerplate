@@ -1,3 +1,4 @@
+import { Context } from '@azure/functions';
 import { Role } from '@boilerplate/entity';
 import { Authorized, Func, InternalServerError } from '@boilerplate/util';
 
@@ -12,7 +13,7 @@ export async function getRoles(_: any, roles?: Role[]): Promise<GetRolesOutput> 
   throw new InternalServerError();
 }
 
-export async function run(context: any) {
+export async function getRolesFunc(context: Context) {
   context.res = await Func.run0(
     context,
     getRoles,

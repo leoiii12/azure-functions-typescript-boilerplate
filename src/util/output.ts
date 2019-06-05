@@ -1,8 +1,8 @@
-export class Output {
+export class Output<T> {
 
   success: boolean = true;
 
-  data: any;
+  data: T;
 
   message: string;
 

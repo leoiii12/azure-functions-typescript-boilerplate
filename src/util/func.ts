@@ -1,15 +1,18 @@
 import { ClassType, transformAndValidate } from 'class-transformer-validator';
 import { ValidationError } from 'class-validator';
 import { JsonWebTokenError, verify } from 'jsonwebtoken';
+import moment from 'moment';
 
-import { Role } from '@boilerplate/entity';
+import { Context } from '@azure/functions';
+import { Role, User } from '@boilerplate/entity';
 
 import { Authorized } from './authorized';
+import { DB } from './db';
 import { InternalServerError, UnauthorizedError, UserFriendlyError } from './error';
 import { Output } from './output';
 
 export interface Func0 {
-  (userId?: string, roles?: Role[]): any;
+  (userId?: number, roles?: Role[]): any;
 }
 
 export interface Func1<TInput> {
@@ -17,7 +20,17 @@ export interface Func1<TInput> {
 }
 
 export interface Func3<TInput> {
-  (input: TInput, userId?: string, roles?: Role[]): any;
+  (input: TInput, userId?: number, roles?: Role[]): any;
+}
+
+export class AuditLog {
+  url: string;
+  input?: string;
+  output?: string;
+  executionTime: any;
+  executionDuration: number;
+  userId?: string;
+  exception?: string;
 }
 
 export namespace Func {
@@ -35,24 +48,38 @@ export namespace Func {
     const accessToken: string = req.headers['x-authorization'].replace('Bearer ', '');
 
     // Get auth secret
-    const secret = process.env.AUTH_SECRET;
+    const secret = process.env.boilerplateJC_AUTH_SECRET;
     if (!secret) {
-      throw new InternalServerError('process.env.AUTH_SECRET is empty.');
+      throw new InternalServerError('process.env.boilerplateJC_AUTH_SECRET is empty.');
     }
 
     const decoded = await verify(accessToken, secret) as any;
 
-    const userId = decoded.sub;
-    const roles: Role[] = decoded.role.map((r: any) => Number.parseInt(r, 10));
+    const userId = decoded.sub as string;
+
+    const connection = await DB.getConnection();
+    const userRepository = connection.getRepository(User);
+    const user = await userRepository.findOne({
+      where: {
+        id: userId,
+      },
+      select: ['tokenVersion', 'roles'],
+    });
+    if (user === undefined || user.enabled === false) {
+      throw new UnauthorizedError();
+    }
+    if (decoded.version !== user.tokenVersion) {
+      throw new UnauthorizedError();
+    }
 
     // Check roles
-    if (authorized && !authorized.permitted(roles)) {
+    if (authorized && !authorized.permitted(user.roles)) {
       throw new UnauthorizedError();
     }
 
     return {
       userId,
-      roles,
+      roles: user.roles,
     };
   }
 
@@ -68,40 +95,73 @@ export namespace Func {
     return undefined;
   }
 
-  export async function run(
-    context: any,
-    func: (verifyResult: { userId?: string; roles?: Role[] }) => Promise<{ status: number; body: Output; headers: {} }>,
+  async function insertAuditLog(auditLog: AuditLog) {
+    // This function allows some logics to log all requests
+    console.log(auditLog);
+  }
+
+  async function run(
+    context: Context,
+    func: (verifyResult: { userId?: string; roles?: Role[] }) => Promise<{ status: number; body: Output<any>; headers: {} }>,
     authorized?: Authorized,
-  ): Promise<{ status: number; body: Output; headers: {} }> {
-    context.log('JavaScript HTTP trigger function processed a request.');
+  ): Promise<{ status: number; body: Output<any>; headers: {} }> {
+    const auditLog: AuditLog = {
+      executionTime: moment(),
+      executionDuration: 0,
+      url: '',
+    };
+
+    let res: { status: number; body: Output<any>; headers: {} };
 
     try {
       const req = context.req;
 
       const verifyResult = await verifyAccessToken(req, authorized);
 
-      return await func(verifyResult);
-    } catch (ex) {
-      if (ex instanceof UnauthorizedError || ex instanceof JsonWebTokenError) {
-        return Output.unauthorized();
+      if (verifyResult) {
+        auditLog.userId = verifyResult.userId;
       }
 
-      if (Array.isArray(ex)) {
+      res = await func(verifyResult);
+    } catch (ex) {
+      console.log(ex);
+
+      auditLog.exception = ex.toString();
+
+      if (ex instanceof UnauthorizedError || ex instanceof JsonWebTokenError) {
+        res = Output.unauthorized();
+      } else if (Array.isArray(ex)) {
         const constraints = ex
           .filter(ex => ex instanceof ValidationError)
           .reduce((acc, ex) => acc.concat(ex.constraints), []);
 
-        return Output.badRequest(constraints);
+        res = Output.badRequest(constraints);
+      } else if (ex instanceof UserFriendlyError) {
+        res = Output.error(ex.message);
+      } else {
+        res = Output.internalError();
       }
 
-      if (ex instanceof UserFriendlyError) {
-        return Output.error(ex.message);
+      if (process.env.NODE_ENV === 'Development') {
+        console.error(ex);
       }
-
-      context.log.error(ex);
-
-      return Output.internalError();
     }
+
+    if (context.req) {
+      if (context.req.url) auditLog.url = context.req.url;
+
+      auditLog.input = JSON.stringify(context.req);
+    }
+    if (res) {
+      auditLog.output = JSON.stringify(res);
+    }
+    auditLog.executionDuration = new Date().valueOf() - auditLog.executionTime.valueOf();
+
+    if (process.env.NODE_ENV === 'Production' && auditLog.url.includes('AuditLog/List') === false) {
+      await insertAuditLog(auditLog);
+    }
+
+    return res;
   }
 
   export async function run1<TInput extends object>(
@@ -109,7 +169,7 @@ export namespace Func {
     func: Func1<TInput> | Func3<TInput>,
     inputClass: ClassType<TInput>,
     authorized?: Authorized,
-  ): Promise<{ status: number; body: Output; headers: {} }> {
+  ): Promise<{ status: number; body: Output<any>; headers: {} }> {
     return await run(
       context,
       async (verifyResult) => {
@@ -117,12 +177,9 @@ export namespace Func {
 
         const anyFunc: any = func as any;
 
-        if (verifyResult) {
-          return Output.ok(await anyFunc(input, verifyResult.userId, verifyResult.roles));
-        }
+        const output = verifyResult ? await anyFunc(input, verifyResult.userId, verifyResult.roles) : await anyFunc(input);
 
-        return Output.ok(await anyFunc(input));
-
+        return Output.ok(output);
       },
       authorized);
   }
@@ -131,17 +188,15 @@ export namespace Func {
     context: any,
     func: Func0,
     authorized?: Authorized,
-  ): Promise<{ status: number; body: Output; headers: {} }> {
+  ): Promise<{ status: number; body: Output<any>; headers: {} }> {
     return await run(
       context,
       async (verifyResult) => {
         const anyFunc: any = func as any;
 
-        if (verifyResult) {
-          return Output.ok(await anyFunc(verifyResult.userId, verifyResult.roles));
-        }
+        const output = verifyResult ? await anyFunc(verifyResult.userId, verifyResult.roles) : await anyFunc();
 
-        return Output.ok(await anyFunc());
+        return Output.ok(output);
       },
       authorized);
   }

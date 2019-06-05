@@ -7,5 +7,8 @@
   "csharp.suppressDotnetRestoreNotification": true,
   "omnisharp.autoStart": false,
   "importSorter.generalConfiguration.sortOnBeforeSave": true,
-  "importSorter.importStringConfiguration.trailingComma": "multiLine"
+  "importSorter.importStringConfiguration.trailingComma": "multiLine",
+  "files.eol": "\n",
+  "gulp.autoDetect": "off",
+  "azureFunctions.projectSubpath": "src"
 }
