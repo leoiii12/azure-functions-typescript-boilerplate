@@ -1,6 +1,5 @@
 import {
-    ClassDeclaration, ClassMemberTypes, DecoratableNode, Node, ParameterDeclaration, Project,
-    PropertyDeclaration, SyntaxKind, ts, Type,
+    ClassDeclaration, ParameterDeclaration, Project, PropertyDeclaration, SyntaxKind, Type,
 } from 'ts-morph';
 
 import { flat, getClassDeclaration } from './util';
@@ -25,23 +24,21 @@ const sourceFiles = project.getSourceFiles('src/**/*.ts');
 
 const entries: ClassEntry[] = [];
 
-if (process.env.NODE_ENV === 'Production') {
-  const inputs = sourceFiles.reduce(
-    (accumulator, currentValue) => accumulator.concat(currentValue.getClasses().filter(c => (c.getName() || '').endsWith('Input'))),
-    [] as ClassDeclaration[],
-  );
-  const outputs = sourceFiles.reduce(
-    (accumulator, currentValue) => accumulator.concat(currentValue.getClasses().filter(c => (c.getName() || '').endsWith('Output'))),
-    [] as ClassDeclaration[],
-  );
+const inputs = sourceFiles.reduce(
+  (accumulator, currentValue) => accumulator.concat(currentValue.getClasses().filter(c => (c.getName() || '').endsWith('Input'))),
+  [] as ClassDeclaration[],
+);
+const outputs = sourceFiles.reduce(
+  (accumulator, currentValue) => accumulator.concat(currentValue.getClasses().filter(c => (c.getName() || '').endsWith('Output'))),
+  [] as ClassDeclaration[],
+);
 
-  inputs.forEach((o) => {
-    addClassDeclaration(o);
-  });
-  outputs.forEach((o) => {
-    addClassDeclaration(o);
-  });
-}
+inputs.forEach((o) => {
+  addClassDeclaration(o);
+});
+outputs.forEach((o) => {
+  addClassDeclaration(o);
+});
 
 function typeToMemberEntry(node: PropertyDeclaration | ParameterDeclaration) {
   // const symbol = arrayType.getSymbol();

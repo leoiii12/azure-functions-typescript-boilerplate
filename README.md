@@ -1,12 +1,17 @@
 # Azure Functions Typescript Boilerplate
 
+This project helps set up so many things that I encountered when developing projects with Azure Functions + TypeScript.
+
 ## Packages
 [typeorm](https://www.npmjs.com/package/typeorm), typescript ORM<br>
 [bcrypt](https://www.npmjs.com/package/bcrypt), password encryption<br>
 [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken), JWT token authentication, `X-Authorization: Bearer <your-token>`<br>
 [tslint](https://www.npmjs.com/package/tslint)<br>
 [parcel-bundler](https://www.npmjs.com/package/parcel-bundler), bundle your functions to decrease the network overheads for faster [cold start](https://blogs.msdn.microsoft.com/appserviceteam/2018/02/07/understanding-serverless-cold-start/)<br>
-[class-transformer-validator](https://www.npmjs.com/package/parcel-bundler), validate the models
+[class-transformer-validator](https://www.npmjs.com/package/parcel-bundler), transform JSON into TS objects and validate them
+[jest](https://www.npmjs.com/package/jest), testing
+[swagger](https://swagger.io) + [ts-morph](https://www.npmjs.com/package/ts-morph), automatically generate the swagger document `doc/versions/staging.json` and the endpoint `${host}/api/SwaggerDoc`
+[dotenv](https://www.npmjs.com/package/dotenv), `.env`
 
 ## Configs
 `src/local.settings.json` for `AUTH_SECRET`<br>
@@ -19,29 +24,37 @@
 `src/func/role-get-roles`, a jwt authorization demo<br>
 `src/func/device-get-devices`<br>
 `src/func/device-add-device`<br>
+`src/func/swagger-doc`, a HTML endpoint to see the generated swagger doc<br>
 
 ## Getting started 
 
 ## Hello World
 `src/func/role-get-roles`
 ```javascript
+import { Context } from '@azure/functions';
 import { Role } from '@boilerplate/entity';
-import { Authorized, Function } from '@boilerplate/util';
+import { Authorized, Func, InternalServerError } from '@boilerplate/util';
 
-class GetRolesOutput {
-  constructor(public roles: Role[]) { }
+export class GetRolesOutput {
+  constructor(public roles: Role[]) {
+  }
 }
 
-export async function run(context: any) {
+export async function getRoles(_: any, roles?: Role[]): Promise<GetRolesOutput> {
+  // 3. Your jwt token will be automatically parsed, you can get userId and roles here
+  // 4. return your output
+  if (roles) return new GetRolesOutput(roles);
+
+  throw new InternalServerError();
+}
+
+// 5. The entry function must end with `Func` or the swagger doc generator cannot find the entry point
+export async function getRolesFunc(context: Context) {
   // 1. Wrap your logic in Function.run
-  context.res = await Function.run(
+  context.res = await Func.run0(
     context,
-    async (userId: string, roles: Role[]) => {
-      // 2. Your jwt token will be automatically parsed, you can get userId and roles here
-      // 3. return your output
-      return new GetRolesOutput(roles);
-    },
-    // 4. You can define the permitted roles to this function 
+    getRoles,
+    // 2. You can define the permitted roles to this function 
     Authorized.permit({
       anyRoles: [Role.Patients, Role.Nurses, Role.Doctors, Role.Instructors],
     }));
@@ -50,49 +63,52 @@ export async function run(context: any) {
 
 `src/func/device-add-device`
 ```javascript
-import { transformAndValidate } from 'class-transformer-validator';
 import { IsDefined } from 'class-validator';
 
+import { Context } from '@azure/functions';
 import { Device, DeviceDto, GeneralDevice, Role } from '@boilerplate/entity';
-import { Authorized, DB, Function, UserFriendlyError } from '@boilerplate/util';
+import { Authorized, DB, Func, UserFriendlyError } from '@boilerplate/util';
 
-// 5. Input
-class AddDeviceInput {
+// 6. Input
+export class AddDeviceInput {
   @IsDefined()
   generalDeviceId: string;
 }
 
-// 6. Output
-class AddDeviceOutput {
-  constructor(public device: DeviceDto) { }
+// 7. Output
+export class AddDeviceOutput {
+  constructor(public device: DeviceDto) {
+  }
 }
 
-export async function run(context: any, req: any) {
-  context.res = await Function.run(
+// 8. The input JSON is automatically parsed
+export async function addDevice(input: AddDeviceInput): Promise<AddDeviceOutput> {
+  // 9. Get a DB connection with TypeORM
+  const connection = await DB.getConnection();
+  const generalDeviceRepository = connection.getRepository(GeneralDevice);
+
+  // 10. API clients will see your exception message defined here 
+  const generalDevice = await generalDeviceRepository.findOne(input.generalDeviceId);
+  if (!generalDevice) throw new UserFriendlyError('The GeneralDevice does not exist');
+
+  // 11. Create a new instance
+  let device = new Device();
+  device.generalDevice = generalDevice;
+
+  device = await generalDeviceRepository.save(device);
+
+  // 12. Return deviceDto with AddDeviceOutput
+  return new AddDeviceOutput(DeviceDto.from(device));
+}
+
+export async function deviceAddDeviceFunc(context: Context) {
+  context.res = await Func.run1(
     context,
-    async () => {
-      // 7. Validate your model
-      const input = await transformAndValidate(AddDeviceInput, req.body) as AddDeviceInput;
-
-      // 8. Get a DB connection with TypeORM
-      const connection = await DB.getConnection();
-      const generalDeviceRepository = connection.getRepository(GeneralDevice);
-
-      // 9. API consumer will see your exception message defined here
-      const generalDevice = await generalDeviceRepository.findOne(input.generalDeviceId);
-      if (!generalDevice) throw new UserFriendlyError('The GeneralDevice does not exist');
-
-      // 10. Create a new entity object
-      let device = new Device();
-      device.generalDevice = generalDevice;
-
-      device = await generalDeviceRepository.save(device);
-
-      // 11. Return deviceDto with AddDeviceOutput
-      return new AddDeviceOutput(DeviceDto.from(device));
-    },
+    addDevice,
+    // The input type
+    AddDeviceInput,
     Authorized.permit({
       anyRoles: [Role.Nurses],
-    }));
+    }),
+  );
 }
-```

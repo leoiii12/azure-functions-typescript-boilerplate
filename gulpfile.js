@@ -43,6 +43,13 @@ function modules() {
     .pipe(filter(scope))
     .pipe(sourcemaps.init())
     .pipe(tsProject())
+    .pipe(change((content) => {
+      if (content.includes('\\${specJson}')) {
+        return content.replace('\\${specJson}', JSON.stringify(swaggerFileObj));
+      }
+
+      return content;
+    }))
     .pipe(sourcemaps.mapSources((sourcePath, file) => {
       return sourcePath.includes('func') ? '../../../../src/' + sourcePath : '../../../src/' + sourcePath;
     }))

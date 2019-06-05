@@ -12,9 +12,9 @@ const swaggerFile: SwaggerFile = {
   swagger: '2.0',
   info: {
     version: pkg.version,
-    title: 'eimjc-api',
+    title: 'Azure Functions TypeScript Boilerplate',
   },
-  host: 'eimjc-api.azurewebsites.net',
+  host: 'localhost:7071',
   basePath: '/',
   schemes: [
     'https',

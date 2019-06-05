@@ -1,0 +1,299 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Azure Functions TypeScript Boilerplate"
+  },
+  "host": "localhost:7071",
+  "basePath": "/",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/api/Auth/Authenticate": {
+      "post": {
+        "operationId": "api_Auth_Authenticate",
+        "tags": [
+          "Auth"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "input",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AuthenticateInput"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/AuthenticateOutput"
+            }
+          }
+        }
+      }
+    },
+    "/api/Auth/SignUp": {
+      "post": {
+        "operationId": "api_Auth_SignUp",
+        "tags": [
+          "Auth"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "input",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SignUpInput"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Device/AddDevice": {
+      "post": {
+        "operationId": "api_Device_AddDevice",
+        "tags": [
+          "Device"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "input",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AddDeviceInput"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/AddDeviceOutput"
+            }
+          }
+        }
+      }
+    },
+    "/api/Device/GetDevices": {
+      "post": {
+        "operationId": "api_Device_GetDevices",
+        "tags": [
+          "Device"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/GetDevicesOutput"
+            }
+          }
+        }
+      }
+    },
+    "/api/HelloWorld": {
+      "post": {
+        "operationId": "api_HelloWorld",
+        "tags": [
+          "HelloWorld"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Role/GetRoles": {
+      "post": {
+        "operationId": "api_Role_GetRoles",
+        "tags": [
+          "Role"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/GetRolesOutput"
+            }
+          }
+        }
+      }
+    },
+    "/api/SwaggerDoc": {
+      "post": {
+        "operationId": "api_SwaggerDoc",
+        "tags": [
+          "SwaggerDoc"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "AuthenticateInput": {
+      "type": "object",
+      "properties": {
+        "mobilePhone": {
+          "type": "string",
+          "description": "@IsDefined() @IsMobilePhone('en-HK')"
+        },
+        "password": {
+          "type": "string",
+          "description": "@IsDefined()"
+        }
+      }
+    },
+    "SignUpInput": {
+      "type": "object",
+      "properties": {
+        "mobilePhone": {
+          "type": "string",
+          "description": "@IsDefined() @IsMobilePhone('en-HK')"
+        },
+        "password": {
+          "type": "string",
+          "description": "@IsDefined()"
+        }
+      }
+    },
+    "AddDeviceInput": {
+      "type": "object",
+      "properties": {
+        "generalDeviceId": {
+          "type": "string",
+          "description": "@IsDefined()"
+        }
+      }
+    },
+    "Output": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "data": {
+          "type": "NonNullable<T>"
+        },
+        "message": {
+          "type": "string"
+        },
+        "dateTime": {
+          "type": "string"
+        }
+      }
+    },
+    "AuthenticateOutput": {
+      "type": "object",
+      "properties": {
+        "accessToken": {
+          "type": "string"
+        }
+      }
+    },
+    "DeviceDto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "unit": {
+          "type": "string"
+        }
+      }
+    },
+    "AddDeviceOutput": {
+      "type": "object",
+      "properties": {
+        "device": {
+          "$ref": "#/definitions/DeviceDto"
+        }
+      }
+    },
+    "GetDevicesOutput": {
+      "type": "object",
+      "properties": {
+        "devices": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DeviceDto"
+          }
+        }
+      }
+    },
+    "GetRolesOutput": {
+      "type": "object",
+      "properties": {
+        "roles": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        }
+      }
+    }
+  }
+}

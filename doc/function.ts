@@ -14,26 +14,24 @@ export interface FunctionEntry {
 
 const funcEntries: FunctionEntry[] = [];
 
-if (process.env.NODE_ENV === 'Production') {
-  const project = new Project({
-    tsConfigFilePath: 'tsconfig.json',
-  });
+const project = new Project({
+  tsConfigFilePath: 'tsconfig.json',
+});
 
-  const sourceFiles = project.getSourceFiles('src/func/**/*.ts');
+const sourceFiles = project.getSourceFiles('src/func/**/*.ts');
 
-  const functions = sourceFiles.reduce(
-    (accumulator, currentValue) => accumulator.concat(currentValue.getFunctions().filter(f => f.getNameOrThrow().endsWith('Func'))),
-    [] as FunctionDeclaration[],
-  );
+const functions = sourceFiles.reduce(
+  (accumulator, currentValue) => accumulator.concat(currentValue.getFunctions().filter(f => f.getNameOrThrow().endsWith('Func'))),
+  [] as FunctionDeclaration[],
+);
 
-  functions.map((f) => {
-    for (const statement of f.getStatements()) {
+functions.map((f) => {
+  for (const statement of f.getStatements()) {
 
-      // context.res = await Func.run1(context, encodeVideo, EncodeVideoInput, Authorized.permit({ anyRoles: [Role.Admins] }));
-      parseStatement(statement, f);
-    }
-  });
-}
+    // context.res = await Func.run1(context, encodeVideo, EncodeVideoInput, Authorized.permit({ anyRoles: [Role.Admins] }));
+    parseStatement(statement, f);
+  }
+});
 
 function parseStatement(statement: Statement<ts.Statement>, functionDeclaration: FunctionDeclaration) {
   if (TypeGuards.isExpressionStatement(statement)) {
