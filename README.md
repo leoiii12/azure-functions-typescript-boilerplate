@@ -8,10 +8,10 @@ This project helps set up so many things that I encountered when developing proj
 [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken), JWT token authentication, `X-Authorization: Bearer <your-token>`<br>
 [tslint](https://www.npmjs.com/package/tslint)<br>
 [parcel-bundler](https://www.npmjs.com/package/parcel-bundler), bundle your functions to decrease the network overheads for faster [cold start](https://blogs.msdn.microsoft.com/appserviceteam/2018/02/07/understanding-serverless-cold-start/)<br>
-[class-transformer-validator](https://www.npmjs.com/package/parcel-bundler), transform JSON into TS objects and validate them
-[jest](https://www.npmjs.com/package/jest), testing
-[swagger](https://swagger.io) + [ts-morph](https://www.npmjs.com/package/ts-morph), automatically generate the swagger document `doc/versions/staging.json` and the endpoint `${host}/api/SwaggerDoc`
-[dotenv](https://www.npmjs.com/package/dotenv), `.env`
+[class-transformer-validator](https://www.npmjs.com/package/parcel-bundler), transform JSON into TS objects and validate them<br>
+[jest](https://www.npmjs.com/package/jest), testing<br>
+[swagger](https://swagger.io) + [ts-morph](https://www.npmjs.com/package/ts-morph), automatically generate the swagger document `doc/versions/staging.json`<br>
+[dotenv](https://www.npmjs.com/package/dotenv), `.env`<br>
 
 ## Configs
 `src/local.settings.json` for `AUTH_SECRET`<br>
