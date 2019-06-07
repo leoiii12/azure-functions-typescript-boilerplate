@@ -3,7 +3,7 @@ import { IsDefined, IsMobilePhone } from 'class-validator';
 
 import { Context } from '@azure/functions';
 import { User } from '@boilerplate/entity';
-import { Authorized, DB, Func, UserFriendlyError } from '@boilerplate/util';
+import { DB, Func, UserFriendlyError } from '@boilerplate/util';
 
 export class SignUpInput {
   @IsDefined()

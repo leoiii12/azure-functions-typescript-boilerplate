@@ -17,6 +17,7 @@ const swaggerFile: SwaggerFile = {
   host: 'localhost:7071',
   basePath: '/',
   schemes: [
+    'http',
     'https',
   ],
   paths: {},
@@ -59,6 +60,12 @@ for (const { filePath, inputClassName, outputClassName } of functionEntries) {
         'application/json',
       ],
       parameters: [
+        {
+          in: 'header',
+          name: 'X-Authorization',
+          type: 'string',
+          required: false,
+        },
       ],
       responses: {
         200: {

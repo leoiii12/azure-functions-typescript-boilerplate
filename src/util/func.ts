@@ -48,9 +48,9 @@ export namespace Func {
     const accessToken: string = req.headers['x-authorization'].replace('Bearer ', '');
 
     // Get auth secret
-    const secret = process.env.boilerplateJC_AUTH_SECRET;
+    const secret = process.env.AUTH_SECRET;
     if (!secret) {
-      throw new InternalServerError('process.env.boilerplateJC_AUTH_SECRET is empty.');
+      throw new InternalServerError('process.env.AUTH_SECRET is empty.');
     }
 
     const decoded = await verify(accessToken, secret) as any;

@@ -21,7 +21,6 @@ export async function deviceGetDevicesFunc(context: Context) {
     context,
     getDevice,
     Authorized.permit({
-      anyRoles: [Role.Patients, Role.Nurses, Role.Doctors, Role.Instructors],
     }),
   );
 }

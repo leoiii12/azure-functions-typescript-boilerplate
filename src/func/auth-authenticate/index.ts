@@ -1,6 +1,7 @@
 import { compare } from 'bcryptjs';
 import { IsDefined, IsMobilePhone } from 'class-validator';
 import { sign } from 'jsonwebtoken';
+import { v4 } from 'uuid';
 
 import { Context } from '@azure/functions';
 import { User } from '@boilerplate/entity';
@@ -31,11 +32,17 @@ export async function authenticate(input: AuthenticateInput): Promise<Authentica
     where: {
       mobilePhone: input.mobilePhone,
     },
+    select: ['id', 'password', 'tokenVersion'],
   });
-  if (!user) throw new UserFriendlyError('Please sign up first.');
+  if (user === undefined) throw new UserFriendlyError('Please sign up first.');
 
   const isValid = await compare(input.password, user.password);
-  if (!isValid) throw new UnauthorizedError();
+  if (isValid === false) throw new UnauthorizedError();
+
+  if (user.tokenVersion === undefined || user.tokenVersion === null) {
+    user.tokenVersion = v4();
+    await userRepository.save(user);
+  }
 
   const options = {
     expiresIn: 60 * 60 * 24 * 31,
@@ -45,8 +52,8 @@ export async function authenticate(input: AuthenticateInput): Promise<Authentica
   };
 
   const payload = {
-    role: user.roles,
     gty: 'Auth/Authenticate',
+    version: user.tokenVersion,
   };
 
   const token = await sign(payload, secret, options);

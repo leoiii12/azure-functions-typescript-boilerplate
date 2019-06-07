@@ -35,7 +35,7 @@ export async function deviceAddDeviceFunc(context: Context) {
     addDevice,
     AddDeviceInput,
     Authorized.permit({
-      anyRoles: [Role.Nurses],
+      anyRoles: [Role.Admins],
     }),
   );
 }

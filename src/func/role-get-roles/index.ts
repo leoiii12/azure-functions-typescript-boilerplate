@@ -18,6 +18,5 @@ export async function getRolesFunc(context: Context) {
     context,
     getRoles,
     Authorized.permit({
-      anyRoles: [Role.Patients, Role.Nurses, Role.Doctors, Role.Instructors],
     }));
 }

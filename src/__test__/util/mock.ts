@@ -1,13 +1,12 @@
 import { hash } from 'bcryptjs';
-import moment from 'moment';
-import * as uuid from 'uuid';
+import { v4 } from 'uuid';
 
 import { Role, User } from '@boilerplate/entity';
 import { DB } from '@boilerplate/util';
 
 export const users = {
   admin_1: {
-    id: uuid.v4(),
+    id: v4(),
     mobilePhone: '88888888',
     password: '123456',
     roles: [Role.Admins],

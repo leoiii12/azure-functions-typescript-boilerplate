@@ -27,6 +27,21 @@ This project helps set up so many things that I encountered when developing proj
 `src/func/swagger-doc`, a HTML endpoint to see the generated swagger doc<br>
 
 ## Getting started 
+```bash
+docker run --name mssql -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=yourStrong(!)Password' -p 1433:1433 -d microsoft/mssql-server-linux:2017-latest
+docker exec -it mssql /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 'yourStrong(!)Password'
+```
+
+```sql
+CREATE DATABASE [boilerplate-database];
+GO
+```
+
+```bash
+npm run typeorm:cli -- migration:generate -c dev -n Init
+npm run typeorm:cli -- migration:run -c dev
+npm run typeorm:cli -- migration:revert -c dev
+```
 
 ## Hello World
 `src/func/role-get-roles`
