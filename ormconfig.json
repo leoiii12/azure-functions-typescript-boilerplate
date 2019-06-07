@@ -6,7 +6,7 @@
     "username": "",
     "password": "",
     "database": "",
-    "logging": false,
+    "logging": true,
     "options": {
       "encrypt": true
     },
@@ -35,6 +35,32 @@
     "logging": false,
     "options": {
       "encrypt": true
+    }
+  },
+  {
+    "name": "dev",
+    "type": "mssql",
+    "host": "localhost",
+    "username": "sa",
+    "password": "yourStrong(!)Password",
+    "database": "boilerplate-database",
+    "logging": true,
+    "options": {
+      "encrypt": true
+    },
+    "entities": [
+      "src/entity/**/*.ts"
+    ],
+    "migrations": [
+      "src/migration/**/*.ts"
+    ],
+    "subscribers": [
+      "src/subscriber/**/*.ts"
+    ],
+    "cli": {
+      "entitiesDir": "src/entity",
+      "migrationsDir": "src/migration",
+      "subscribersDir": "src/subscriber"
     }
   },
   {
