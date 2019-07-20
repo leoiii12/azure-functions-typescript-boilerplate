@@ -60,7 +60,7 @@
       "js"
     ],
     "transform": {
-      "^.+\\.(js|ts|tsx)$": "ts-jest"
+      "^.+\\.(ts|tsx)$": "ts-jest"
     },
     "globals": {
       "ts-jest": {
@@ -68,7 +68,7 @@
       }
     },
     "testMatch": [
-      "./__test__/func/*.spec.+(ts|tsx|js)"
+      "**/__test__/func/*.spec.+(ts|tsx|js)"
     ],
     "setupFilesAfterEnv": [
       "./jest.setup.js"
