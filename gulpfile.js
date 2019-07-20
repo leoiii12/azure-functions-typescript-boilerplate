@@ -10,18 +10,18 @@ const change = require('gulp-change');
 const rename = require('gulp-rename');
 const changed = require('gulp-changed');
 
-const swagger = require('./swagger/index.ts'); fs.writeFileSync('swagger/versions/staging.json', JSON.stringify(swagger.swaggerFileObj, null, 2), 'utf8');
+const swagger = require('./doc/index.ts'); fs.writeFileSync('doc/versions/staging.json', JSON.stringify(swagger.swaggerFileObj, null, 2), 'utf8');
 
 const isProd = process.env.NODE_ENV === 'Development' ? false : true;
 
 function clean() {
-  return del(['dist', 'node_modules/@ecom', '.cache']);
+  return del(['dist', 'node_modules/@boilerplate', '.cache']);
 }
 
 function modules() {
   const tsProject = ts.createProject('tsconfig.json');
   const scope = ['src/entity/**/*.ts', 'src/util/**/*.ts', 'src/func/**/*.ts', 'src/svc/**/*.ts'];
-  const outDir = 'node_modules/@ecom';
+  const outDir = 'node_modules/@boilerplate';
   const swaggerFileObj = swagger.swaggerFileObj;
 
   if (isProd) {

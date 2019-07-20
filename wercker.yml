@@ -7,7 +7,7 @@ build:
       code: npm install
     - script:
       name: build
-      code: npm run build:dev
+      code: npm run build:prod
     - script:
       name: test
       code: npm run test
