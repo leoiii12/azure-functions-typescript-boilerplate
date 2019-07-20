@@ -1,16 +1,17 @@
 import { hash } from 'bcryptjs';
-import { IsDefined, IsMobilePhone } from 'class-validator';
+import { IsDefined, IsEmail, MinLength } from 'class-validator';
 
 import { Context } from '@azure/functions';
-import { User } from '@boilerplate/entity';
+import { User, UserRole } from '@boilerplate/entity';
 import { DB, Func, UserFriendlyError } from '@boilerplate/util';
 
 export class SignUpInput {
   @IsDefined()
-  @IsMobilePhone('en-HK')
-  mobilePhone: string;
+  @IsEmail()
+  emailAddress: string;
 
   @IsDefined()
+  @MinLength(6)
   password: string;
 }
 
@@ -20,17 +21,19 @@ export async function signUp(input: SignUpInput) {
 
   let user = await userRepository.findOne({
     where: {
-      mobilePhone: input.mobilePhone,
+      emailAddress: input.emailAddress,
     },
   });
-  if (user) throw new UserFriendlyError('The mobilePhone is occupied.');
+  if (user) throw new UserFriendlyError('The emailAddress is occupied.');
 
   user = new User();
-  user.mobilePhone = input.mobilePhone;
+  user.emailAddress = input.emailAddress;
   user.password = await hash(input.password, 12);
-  user.roles = [];
+  user.roles = [
+    UserRole.Users,
+  ];
 
-  await userRepository.insert(user);
+  await userRepository.save(user);
 }
 
 export async function authSignUpFunc(context: Context) {

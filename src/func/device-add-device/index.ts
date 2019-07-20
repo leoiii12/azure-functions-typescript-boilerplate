@@ -1,7 +1,7 @@
 import { IsDefined } from 'class-validator';
 
 import { Context } from '@azure/functions';
-import { Device, DeviceDto, GeneralDevice, Role } from '@boilerplate/entity';
+import { Device, DeviceDto, GeneralDevice, UserRole } from '@boilerplate/entity';
 import { Authorized, DB, Func, UserFriendlyError } from '@boilerplate/util';
 
 export class AddDeviceInput {
@@ -35,7 +35,7 @@ export async function deviceAddDeviceFunc(context: Context) {
     addDevice,
     AddDeviceInput,
     Authorized.permit({
-      anyRoles: [Role.Admins],
+      anyRoles: [UserRole.Admins],
     }),
   );
 }

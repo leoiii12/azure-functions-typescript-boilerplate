@@ -1,9 +1,14 @@
 import {
-    Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn,
+    AfterLoad, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn,
+    UpdateDateColumn,
 } from 'typeorm';
 
 import { DeviceHistory } from './device-history';
-import { Role } from './role';
+
+export enum UserRole {
+  Users = 1000,
+  Admins = 9999,
+}
 
 @Entity('user')
 export class User {
@@ -12,13 +17,13 @@ export class User {
   id: string;
 
   @Column()
-  mobilePhone: string;
+  emailAddress: string;
 
   @Column()
   password: string;
 
   @Column('simple-array')
-  roles: Role[];
+  roles: UserRole[];
 
   @CreateDateColumn()
   createDate: Date;
@@ -32,7 +37,52 @@ export class User {
   @Column({ default: true })
   enabled: boolean = true;
 
-  @OneToMany(type => DeviceHistory, d => d.userId)
+  @OneToMany(() => DeviceHistory, d => d.userId)
   deviceHistories: DeviceHistory[];
+
+  @AfterLoad()
+  onLoad() {
+    if (this.roles) {
+      this.roles = this.roles.map((r: any) => parseInt(r, undefined) as UserRole);
+    }
+  }
+
+}
+
+export class UserListDto {
+  constructor(
+    public id: string,
+    public emailAddress: string,
+  ) {
+  }
+
+  static from(user: User): UserListDto {
+    return new UserListDto(
+      user.id,
+      user.emailAddress,
+    );
+  }
+}
+
+export class MyUserDto {
+
+  constructor(
+    public id: string,
+    public emailAddress: string,
+    public roles: UserRole[],
+    public createDate: Date,
+    public updateDate: Date,
+  ) {
+  }
+
+  static from(user: User): MyUserDto {
+    return new MyUserDto(
+      user.id,
+      user.emailAddress,
+      user.roles,
+      user.createDate,
+      user.updateDate,
+    );
+  }
 
 }

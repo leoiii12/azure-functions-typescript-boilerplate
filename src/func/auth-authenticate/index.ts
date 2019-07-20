@@ -1,5 +1,5 @@
 import { compare } from 'bcryptjs';
-import { IsDefined, IsMobilePhone } from 'class-validator';
+import { IsDefined, IsEmail } from 'class-validator';
 import { sign } from 'jsonwebtoken';
 import { v4 } from 'uuid';
 
@@ -9,8 +9,8 @@ import { DB, Func, UnauthorizedError, UserFriendlyError } from '@boilerplate/uti
 
 export class AuthenticateInput {
   @IsDefined()
-  @IsMobilePhone('en-HK')
-  mobilePhone: string;
+  @IsEmail()
+  emailAddress: string;
 
   @IsDefined()
   password: string;
@@ -23,14 +23,14 @@ export class AuthenticateOutput {
 
 export async function authenticate(input: AuthenticateInput): Promise<AuthenticateOutput> {
   const secret = process.env.AUTH_SECRET;
-  if (!secret) throw new Error('Invalid AUTH_SECRET.');
+  if (secret === undefined || secret === null) throw new Error('Invalid AUTH_SECRET.');
 
   const connection = await DB.getConnection();
   const userRepository = connection.getRepository(User);
 
   const user = await userRepository.findOne({
     where: {
-      mobilePhone: input.mobilePhone,
+      emailAddress: input.emailAddress,
     },
     select: ['id', 'password', 'tokenVersion'],
   });

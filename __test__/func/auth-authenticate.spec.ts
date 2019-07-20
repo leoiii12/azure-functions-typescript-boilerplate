@@ -4,20 +4,21 @@ import { User } from '@boilerplate/entity';
 import { authenticate, AuthenticateInput } from '@boilerplate/func';
 import { DB, UnauthorizedError, UserFriendlyError } from '@boilerplate/util';
 
-import { createMockAccounts, init, users } from '../util/mock';
+import { createMockUsers, init } from '../entity/mock';
+import { users } from '../entity/users';
 
 beforeAll(async (done) => {
   await init();
-  await createMockAccounts();
+  await createMockUsers();
 
   done();
 });
 
 describe('auth-authenticate', () => {
 
-  it('should work when correct password with mobilePhone', async () => {
+  it('should work when correct password with emailAddress', async () => {
     const input = new AuthenticateInput();
-    input.mobilePhone = users.admin_1.mobilePhone;
+    input.emailAddress = users.admin_1.emailAddress;
     input.password = users.admin_1.password;
 
     const output = await authenticate(input);
@@ -36,7 +37,7 @@ describe('auth-authenticate', () => {
 
   it('should error when incorrect password', async () => {
     const input = new AuthenticateInput();
-    input.mobilePhone = users.admin_1.mobilePhone;
+    input.emailAddress = users.admin_1.emailAddress;
     input.password = 'incorrect';
 
     await expect(authenticate(input)).rejects.toThrowError(UnauthorizedError);
@@ -44,7 +45,7 @@ describe('auth-authenticate', () => {
 
   it('should error when incorrect password', async () => {
     const input = new AuthenticateInput();
-    input.mobilePhone = users.admin_1.mobilePhone;
+    input.emailAddress = users.admin_1.emailAddress;
 
     // tslint:disable-next-line:max-line-length
     input.password = 'incorrectincorrectincorrectincorrectincorrectincorrectincorrectincorrectincorrectincorrectincorrectincorrectincorrectincorrectincorrectincorrectincorrectincorrectincorrectincorrectincorrectincorrectincorrectincorrectincorrectincorrectincorrectincorrectincorrect';
@@ -54,7 +55,7 @@ describe('auth-authenticate', () => {
 
   it('should error when no sign up', async () => {
     const input = new AuthenticateInput();
-    input.mobilePhone = 'A000000';
+    input.emailAddress = 'A000000';
     input.password = 'incorrect';
 
     await expect(authenticate(input)).rejects.toThrowError(UserFriendlyError);

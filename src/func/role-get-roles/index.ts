@@ -1,13 +1,13 @@
 import { Context } from '@azure/functions';
-import { Role } from '@boilerplate/entity';
+import { UserRole } from '@boilerplate/entity';
 import { Authorized, Func, InternalServerError } from '@boilerplate/util';
 
 export class GetRolesOutput {
-  constructor(public roles: Role[]) {
+  constructor(public roles: UserRole[]) {
   }
 }
 
-export async function getRoles(_: any, roles?: Role[]): Promise<GetRolesOutput> {
+export async function getRoles(_: any, roles?: UserRole[]): Promise<GetRolesOutput> {
   if (roles) return new GetRolesOutput(roles);
 
   throw new InternalServerError();

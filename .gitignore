@@ -27,3 +27,4 @@ appsettings.json
 /dist
 
 /doc/versions/staging.json
+/docker_volumes

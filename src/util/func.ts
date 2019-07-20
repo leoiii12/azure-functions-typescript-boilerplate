@@ -4,7 +4,7 @@ import { JsonWebTokenError, verify } from 'jsonwebtoken';
 import moment from 'moment';
 
 import { Context } from '@azure/functions';
-import { Role, User } from '@boilerplate/entity';
+import { User, UserRole } from '@boilerplate/entity';
 
 import { Authorized } from './authorized';
 import { DB } from './db';
@@ -12,7 +12,7 @@ import { InternalServerError, UnauthorizedError, UserFriendlyError } from './err
 import { Output } from './output';
 
 export interface Func0 {
-  (userId?: number, roles?: Role[]): any;
+  (userId?: string, roles?: UserRole[]): any;
 }
 
 export interface Func1<TInput> {
@@ -20,7 +20,7 @@ export interface Func1<TInput> {
 }
 
 export interface Func3<TInput> {
-  (input: TInput, userId?: number, roles?: Role[]): any;
+  (input: TInput, userId?: string, roles?: UserRole[]): any;
 }
 
 export class AuditLog {
@@ -35,7 +35,7 @@ export class AuditLog {
 
 export namespace Func {
 
-  async function verifyAccessToken(req: any, authorized?: Authorized): Promise<{ userId?: string; roles?: Role[]; }> {
+  async function verifyAccessToken(req: any, authorized?: Authorized): Promise<{ userId?: string; roles?: UserRole[]; }> {
     // Check header
     if (!('x-authorization' in req.headers)) {
       if (authorized) {
@@ -63,7 +63,7 @@ export namespace Func {
       where: {
         id: userId,
       },
-      select: ['tokenVersion', 'roles'],
+      select: ['tokenVersion', 'roles', 'enabled'],
     });
     if (user === undefined || user.enabled === false) {
       throw new UnauthorizedError();
@@ -102,7 +102,7 @@ export namespace Func {
 
   async function run(
     context: Context,
-    func: (verifyResult: { userId?: string; roles?: Role[] }) => Promise<{ status: number; body: Output<any>; headers: {} }>,
+    func: (verifyResult: { userId?: string; roles?: UserRole[] }) => Promise<{ status: number; body: Output<any>; headers: {} }>,
     authorized?: Authorized,
   ): Promise<{ status: number; body: Output<any>; headers: {} }> {
     const auditLog: AuditLog = {

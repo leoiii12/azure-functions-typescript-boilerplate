@@ -8,28 +8,29 @@ const sourcemaps = require('gulp-sourcemaps');
 const filter = require('gulp-filter');
 const change = require('gulp-change');
 const rename = require('gulp-rename');
+const changed = require('gulp-changed');
 
-const doc = require('./doc/index.ts'); fs.writeFileSync('doc/versions/staging.json', JSON.stringify(doc.swaggerFileObj, null, 2), 'utf8');
+const swagger = require('./swagger/index.ts'); fs.writeFileSync('swagger/versions/staging.json', JSON.stringify(swagger.swaggerFileObj, null, 2), 'utf8');
 
 const isProd = process.env.NODE_ENV === 'Development' ? false : true;
 
 function clean() {
-  return del(['dist', 'node_modules/@boilerplate', '.cache']);
+  return del(['dist', 'node_modules/@ecom', '.cache']);
 }
 
 function modules() {
   const tsProject = ts.createProject('tsconfig.json');
-  const scope = ['src/entity/**/*.ts', 'src/util/**/*.ts', 'src/func/**/*.ts'];
-  const outDir = 'node_modules/@boilerplate';
-  const swaggerFileObj = doc.swaggerFileObj;
+  const scope = ['src/entity/**/*.ts', 'src/util/**/*.ts', 'src/func/**/*.ts', 'src/svc/**/*.ts'];
+  const outDir = 'node_modules/@ecom';
+  const swaggerFileObj = swagger.swaggerFileObj;
 
   if (isProd) {
     return gulp
       .src('src/**/*.ts')
       .pipe(filter(scope))
       .pipe(change((content) => {
-        if (content.includes('\\${specJson}')) {
-          return content.replace('\\${specJson}', JSON.stringify(swaggerFileObj));
+        if (content.includes('$___specJson___')) {
+          return content.replace('$___specJson___', JSON.stringify(swaggerFileObj));
         }
 
         return content;
@@ -40,6 +41,8 @@ function modules() {
 
   return gulp
     .src('src/**/*.ts')
+    .pipe(changed(outDir, { transformPath: newPath => newPath.replace('.ts', '.js') }))
+
     .pipe(filter(scope))
     .pipe(sourcemaps.init())
     .pipe(tsProject())
@@ -69,6 +72,8 @@ function libs() {
 
   return gulp
     .src('src/index.ts')
+    .pipe(changed('dist', { transformPath: newPath => newPath.replace('.ts', '.js') }))
+
     .pipe(sourcemaps.init())
     .pipe(tsProject())
     .pipe(sourcemaps.mapSources(function (sourcePath, file) {
@@ -90,6 +95,7 @@ function funcBootstraps() {
 
   return gulp
     .src('src/func/*/index.ts')
+    .pipe(changed('dist', { transformPath: newPath => newPath.replace('.ts', '.js') }))
 
     // 1. Rename to bootstrap.ts
     // 2. Modify content with the template
@@ -156,7 +162,7 @@ async function libsPacks() {
 }
 
 function watch() {
-  gulp.watch(['src/entity/**/*.ts', 'src/util/**/*.ts', 'src/func/**/*.ts'], gulp.series(modules));
+  gulp.watch(['src/entity/**/*.ts', 'src/util/**/*.ts', 'src/func/**/*.ts', 'src/svc/**/*.ts'], gulp.series(modules));
 }
 
 exports.clean = clean;

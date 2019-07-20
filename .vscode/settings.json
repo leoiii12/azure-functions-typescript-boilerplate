@@ -1,14 +1,22 @@
 {
+  "files.eol": "\n",
+  "cSpell.words": [
+    "typeorm"
+  ],
+  "csharp.suppressDotnetRestoreNotification": true,
+  "omnisharp.autoStart": false,
   "azureFunctions.projectRuntime": "~2",
   "azureFunctions.projectLanguage": "JavaScript",
   "azureFunctions.templateFilter": "Verified",
   "azureFunctions.deploySubpath": "dist",
   "azureFunctions.preDeployTask": "restoreExtensionsProd",
-  "csharp.suppressDotnetRestoreNotification": true,
-  "omnisharp.autoStart": false,
+  "azureFunctions.projectSubpath": "src",
   "importSorter.generalConfiguration.sortOnBeforeSave": true,
   "importSorter.importStringConfiguration.trailingComma": "multiLine",
-  "files.eol": "\n",
   "gulp.autoDetect": "off",
-  "azureFunctions.projectSubpath": "src"
+  "rest-client.environmentVariables": {
+    "$shared": {
+      "host": ""
+    }
+  }
 }

@@ -1,5 +1,5 @@
 import { Context } from '@azure/functions';
-import { Device, DeviceDto, Role } from '@boilerplate/entity';
+import { Device, DeviceDto, UserRole } from '@boilerplate/entity';
 import { Authorized, DB, Func } from '@boilerplate/util';
 
 export class GetDevicesOutput {

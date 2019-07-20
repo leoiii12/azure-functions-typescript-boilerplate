@@ -1,0 +1,69 @@
+###
+# @name HelloWorld
+POST http://{{host}}/api/HelloWorld HTTP/1.1
+
+###
+# @name Init
+
+POST http://{{host}}/api/Init HTTP/1.1
+
+{
+  "emailAddress": "mkchoi@hktv.com.hk",
+  "password": "123456"
+}
+
+###
+# @name Auth_Authenticate
+
+POST http://{{host}}/api/Auth/Authenticate HTTP/1.1
+
+{
+  "emailAddress": "mkchoi@hktv.com.hk",
+  "password": "123456"
+}
+
+@accessToken = {{Auth_Authenticate.response.body.$.data.accessToken}}
+
+###
+# @name User_GetMyUser
+
+POST http://{{host}}/api/User/GetMyUser HTTP/1.1
+X-Authorization: Bearer {{accessToken}}
+
+@userId = {{User_GetMyUser.response.body.$.data.myUser.id}}
+
+###
+# @name User_ListUsers
+
+POST http://{{host}}/api/User/ListUsers HTTP/1.1
+X-Authorization: Bearer {{accessToken}}
+
+{
+  "skip": 0
+}
+
+###
+# @name Project_Create
+
+POST http://{{host}}/api/Project/Create HTTP/1.1
+X-Authorization: Bearer {{accessToken}}
+
+{
+  "name": "FDX"
+}
+
+###
+# @name Project_GetProjects
+
+POST http://{{host}}/api/Project/GetProjects HTTP/1.1
+X-Authorization: Bearer {{accessToken}}
+
+###
+# @name Doc_GetDocs
+
+POST http://{{host}}/api/Doc/GetDocs HTTP/1.1
+X-Authorization: Bearer {{accessToken}}
+
+{
+  "projectId": 1
+}

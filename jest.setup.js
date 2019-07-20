@@ -1,8 +1,14 @@
 const dotenv = require('dotenv');
 const path = require('path');
 
-dotenv.config({
-  path: path.resolve('.env/test.env'),
-});
+if (process.env.NODE_ENV === 'WERCKER') {
+  dotenv.config({
+    path: path.resolve('.env/wercker.env'),
+  });
+} else {
+  dotenv.config({
+    path: path.resolve('.env/test.env'),
+  });
+}
 
 jest.setTimeout(30000);

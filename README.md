@@ -18,6 +18,7 @@ This project helps set up so many things that I encountered when developing proj
 `ormconfig.json` for your DB
 
 ## Default functions
+`src/func/init`, a great start to initialize the admin account<br>
 `src/func/hello-world`, a great start<br>
 `src/func/auth-sign-up`, a sign up demos<br>
 `src/func/auth-authenticate`, a jwt authenticate demo<br>
@@ -25,17 +26,6 @@ This project helps set up so many things that I encountered when developing proj
 `src/func/device-get-devices`<br>
 `src/func/device-add-device`<br>
 `src/func/swagger-doc`, a HTML endpoint to see the generated swagger doc<br>
-
-## Getting started 
-```bash
-docker run --name mssql -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=yourStrong(!)Password' -p 1433:1433 -d microsoft/mssql-server-linux:2017-latest
-docker exec -it mssql /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 'yourStrong(!)Password'
-```
-
-```sql
-CREATE DATABASE [boilerplate-database];
-GO
-```
 
 ```bash
 npm run typeorm:cli -- migration:generate -c dev -n Init

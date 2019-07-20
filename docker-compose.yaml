@@ -1,0 +1,23 @@
+version: '3'
+services:
+  mssql:
+    image: 'mcr.microsoft.com/mssql/server:2017-latest-ubuntu'
+    ports:
+      - 1433:1433
+    environment:
+      ACCEPT_EULA: 'Y'
+      SA_PASSWORD: 'yourStrong(!)Password'
+  mssql-tools:
+    build:
+      context: ./mssql-tools
+      dockerfile: Dockerfile
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
