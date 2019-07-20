@@ -1,5 +1,6 @@
-# Azure Functions Typescript Boilerplate
 
+# Azure Functions Typescript Boilerplate
+[![wercker status](https://app.wercker.com/status/dd35967169a2305d61e7f6f5560fd0db/s/master "wercker status")](https://app.wercker.com/project/byKey/dd35967169a2305d61e7f6f5560fd0db)<br>
 This project helps set up so many things that I encountered when developing projects with Azure Functions + TypeScript.
 
 ## Packages
