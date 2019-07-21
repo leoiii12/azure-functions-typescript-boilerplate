@@ -15,7 +15,11 @@ export interface SwaggerFile {
 }
 
 export interface SwaggerPath {
-  post: SwaggerAction;
+  post?: SwaggerAction;
+  get?: SwaggerAction;
+  delete?: SwaggerAction;
+  put?: SwaggerAction;
+  patch?: SwaggerAction;
 }
 
 export interface SwaggerAction {

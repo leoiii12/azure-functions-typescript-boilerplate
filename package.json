@@ -42,6 +42,7 @@
     "typescript": "^3.5.3"
   },
   "dependencies": {
+    "@types/app-root-path": "^1.2.4",
     "bcryptjs": "^2.4.3",
     "class-transformer": "^0.2.0",
     "class-transformer-validator": "^0.7.1",
