@@ -11,7 +11,7 @@ const pkg: any = JSON.parse(fs.readFileSync('package.json').toString());
 const hostJsonPath = `${appRoot}/src/host.json`;
 const hostJson: any = JSON.parse(fs.readFileSync(hostJsonPath).toString());
 const routePrefix = (hostJson.hasOwnProperty('extensions') && hostJson.extensions.hasOwnProperty('http')
-                    && hostJson.extensions.http.hasOwnProperty('routePrefix')) ? hostJson.extensions.http. routePrefix : 'api';
+  && hostJson.extensions.http.hasOwnProperty('routePrefix')) ? hostJson.extensions.http.routePrefix : 'api';
 
 const swaggerFile: SwaggerFile = {
   swagger: '2.0',
@@ -34,8 +34,8 @@ for (const { filePath, inputClassName, outputClassName } of functionEntries) {
 
   const functionJsonString = fs.readFileSync(functionJsonPath).toString();
   const functionJson = JSON.parse(functionJsonString);
-  const hasMethodKey = functionJson.bindings[0].hasOwnProperty('methods') ;
-  const functionMethods  = hasMethodKey ? functionJson.bindings[0].methods : ['get'];
+  const hasMethodKey = functionJson.bindings[0].hasOwnProperty('methods');
+  const functionMethods = hasMethodKey ? functionJson.bindings[0].methods : ['get'];
 
   if (!functionJsonString.includes('httpTrigger')) {
     continue;
@@ -53,52 +53,52 @@ for (const { filePath, inputClassName, outputClassName } of functionEntries) {
 
   // /api/Auth/Authenticate -> api_Auth_Authenticate
   const operationId = route.replace(/\//g, '_').slice(1);
-  let path: SwaggerPath={};
-  for (let method of functionMethods) {
+  const path: SwaggerPath = {};
+  for (const method of functionMethods) {
     const innerJson = {
-        operationId,
-        tags: [
-          tag,
-        ],
-        consumes: [
-          'application/json',
-        ],
-        produces: [
-          'application/json',
-        ],
-        parameters: [
-          {
-            in: 'header',
-            name: 'X-Authorization',
-            type: 'string',
-            required: false,
-          },
-        ],
-        responses: {
-          200: {
-            description: 'Success',
-          },
+      operationId,
+      tags: [
+        tag,
+      ],
+      consumes: [
+        'application/json',
+      ],
+      produces: [
+        'application/json',
+      ],
+      parameters: [
+        {
+          in: 'header',
+          name: 'X-Authorization',
+          type: 'string',
+          required: false,
         },
+      ],
+      responses: {
+        200: {
+          description: 'Success',
+        },
+      },
     };
-    switch(method.toLowerCase()) {
+    switch (method.toLowerCase()) {
       case 'get':
         path.get = innerJson;
         break;
       case 'post':
-          path.post = innerJson;
+        path.post = innerJson;
         break;
       case 'put':
         path.put = innerJson;
         break;
       case 'delete':
-          path.delete = innerJson;
+        path.delete = innerJson;
         break;
       case 'patch':
-          path.patch = innerJson;
+        path.patch = innerJson;
         break;
 
-    } 
-  
+    }
+
     if (inputClassName !== undefined) {
       const parameter = {
         name: 'input',
@@ -116,21 +116,20 @@ for (const { filePath, inputClassName, outputClassName } of functionEntries) {
         if (path.post !== undefined) {
           path.post.parameters.push(parameter);
         }
-      }  else if (method === 'put') {
+      } else if (method === 'put') {
         if (path.put !== undefined) {
           path.put.parameters.push(parameter);
         }
-      }  else if ( method === 'patch') {
+      } else if (method === 'patch') {
         if (path.patch !== undefined) {
           path.patch.parameters.push(parameter);
         }
-      }  else if (method === 'delete') {
+      } else if (method === 'delete') {
         if (path.delete !== undefined) {
           path.delete.parameters.push(parameter);
         }
       }
     }
-  
     if (outputClassName !== undefined) {
       if (method === 'post') {
         if (path.post !== undefined) {

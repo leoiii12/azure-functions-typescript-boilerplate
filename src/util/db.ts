@@ -1,4 +1,4 @@
-import { Connection, createConnection, getConnectionOptions } from 'typeorm';
+import { Connection, createConnection, getConnectionOptions, AfterInsert } from 'typeorm';
 
 import { ENTITIES } from '@boilerplate/entity';
 

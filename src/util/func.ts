@@ -10,6 +10,7 @@ import { Authorized } from './authorized';
 import { DB } from './db';
 import { InternalServerError, UnauthorizedError, UserFriendlyError } from './error';
 import { Output } from './output';
+import { Index } from 'typeorm';
 
 export interface Func0 {
   (userId?: number, roles?: Role[]): any;
@@ -19,6 +20,12 @@ export interface Func1<TInput> {
   (input: TInput): any;
 }
 
+export enum OperationID {
+  INSERT,
+  DELETE,
+  UPDATE,
+  SEARCH,
+}
 export interface Func3<TInput> {
   (input: TInput, userId?: number, roles?: Role[]): any;
 }
@@ -63,14 +70,14 @@ export namespace Func {
       where: {
         id: userId,
       },
-      select: ['tokenVersion', 'roles'],
+      select: ['roles', 'enabled'],
     });
-    if (user === undefined || user.enabled === false) {
+    if (user === undefined || !user.enabled) {
       throw new UnauthorizedError();
     }
-    if (decoded.version !== user.tokenVersion) {
-      throw new UnauthorizedError();
-    }
+    // if (decoded.version !== user.tokenVersion) {
+    //   throw new UnauthorizedError();
+    // }
 
     // Check roles
     if (authorized && !authorized.permitted(user.roles)) {
@@ -139,7 +146,7 @@ export namespace Func {
       } else if (ex instanceof UserFriendlyError) {
         res = Output.error(ex.message);
       } else {
-        res = Output.internalError();
+        res = Output.internalError(`${ex.toString()}`);
       }
 
       if (process.env.NODE_ENV === 'Development') {
@@ -157,17 +164,18 @@ export namespace Func {
     }
     auditLog.executionDuration = new Date().valueOf() - auditLog.executionTime.valueOf();
 
-    if (process.env.NODE_ENV === 'Production' && auditLog.url.includes('AuditLog/List') === false) {
+    if (process.env.NODE_ENV === 'Production' && !auditLog.url.includes('AuditLog/List')) {
       await insertAuditLog(auditLog);
     }
 
     return res;
   }
 
-  export async function run1<TInput extends object>(
+  export async function runWithInput<TInput extends object>(
     context: any,
     func: Func1<TInput> | Func3<TInput>,
     inputClass: ClassType<TInput>,
+    opID : OperationID,
     authorized?: Authorized,
   ): Promise<{ status: number; body: Output<any>; headers: {} }> {
     return await run(
@@ -178,13 +186,18 @@ export namespace Func {
         const anyFunc: any = func as any;
 
         const output = verifyResult ? await anyFunc(input, verifyResult.userId, verifyResult.roles) : await anyFunc(input);
-
+        if (opID === OperationID.INSERT) {
+          return Output.created(output);
+        }
+        if  (opID === OperationID.DELETE || opID === OperationID.UPDATE)  {
+          return Output.accepted(output);
+        }
         return Output.ok(output);
       },
       authorized);
   }
 
-  export async function run0(
+  export async function runWithoutInput(
     context: any,
     func: Func0,
     authorized?: Authorized,

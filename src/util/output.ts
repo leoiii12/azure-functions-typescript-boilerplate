@@ -1,3 +1,6 @@
+import { http } from 'winston';
+import * as HttpStatus from 'http-status-codes'
+
 export class Output<T> {
 
   success: boolean = true;
@@ -27,7 +30,31 @@ export class Output<T> {
       if (data != null) output.data = data;
     }
 
-    return this.out(200, output);
+    return this.out(HttpStatus.OK, output);
+  }
+
+  static accepted(data?: any) {
+    const output = new Output();
+
+    if (typeof data === 'string') {
+      output.message = data;
+    } else if (typeof data === 'object') {
+      if (data != null) output.data = data;
+    }
+
+    return this.out(HttpStatus.ACCEPTED, output);
+  }
+
+  static created(data?: any) {
+    const output = new Output();
+
+    if (typeof data === 'string') {
+      output.message = data;
+    } else if (typeof data === 'object') {
+      if (data != null) output.data = data;
+    }
+
+    return this.out(HttpStatus.CREATED, output);
   }
 
   static internalError(message: string = 'There are some errors.', data?: any) {

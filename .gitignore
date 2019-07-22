@@ -1,5 +1,5 @@
 *.swp
-
+ormconfig.json
 bin
 obj
 csx

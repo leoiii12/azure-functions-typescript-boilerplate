@@ -1,8 +1,17 @@
 {
   "IsEncrypted": false,
   "Values": {
-    "AzureWebJobsStorage": "",
-    "FUNCTIONS_WORKER_RUNTIME": "node",
-    "NODE_OPTIONS": "--inspect=5858"
+    "WEBSITE_SLOT_NAME": "Production",
+    "FUNCTIONS_EXTENSION_VERSION": "~2",
+    "ScmType": "None",
+    "WEBSITE_AUTH_ENABLED": "False",
+    "APPINSIGHTS_INSTRUMENTATIONKEY": "53cd3ca5-2391-4ad2-a84a-169203ef5a49",
+    "AzureWebJobsDashboard": "DefaultEndpointsProtocol=https;AccountName=akzgc6erciwokazfunctions;AccountKey=4JWxhL5w9mR/SDa4lChIZuOZ6lw2OkQ02hSB7NQbgLiFqJlSmexLX01TtuMa6CvDEQzxIdoY/LXIoEESfjDCbg==",
+    "WEBSITE_NODE_DEFAULT_VERSION": "8.11.1",
+    "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING": "DefaultEndpointsProtocol=https;AccountName=akzgc6erciwokazfunctions;AccountKey=4JWxhL5w9mR/SDa4lChIZuOZ6lw2OkQ02hSB7NQbgLiFqJlSmexLX01TtuMa6CvDEQzxIdoY/LXIoEESfjDCbg==",
+    "WEBSITE_CONTENTSHARE": "easyshop-public-services",
+    "WEBSITE_SITE_NAME": "easyshop-public-services",
+    "AzureWebJobsStorage": "DefaultEndpointsProtocol=https;AccountName=akzgc6erciwokazfunctions;AccountKey=4JWxhL5w9mR/SDa4lChIZuOZ6lw2OkQ02hSB7NQbgLiFqJlSmexLX01TtuMa6CvDEQzxIdoY/LXIoEESfjDCbg==",
+    "NODE_ENV" : "Development"
   }
 }

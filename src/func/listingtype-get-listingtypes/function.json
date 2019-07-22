@@ -3,12 +3,12 @@
   "bindings": [
     {
       "authLevel": "anonymous",
-      "route": "Auth/SignUp",
+      "route": "public/listing_types",
       "type": "httpTrigger",
       "direction": "in",
       "name": "req",
       "methods": [
-        "post"
+        "get"
       ]
     },
     {

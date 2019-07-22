@@ -12,4 +12,9 @@ export class UserFriendlyError extends Error {
 }
 
 export class InternalServerError extends Error {
+  constructor(message?: string) {
+    super();
+
+    this.message = message || 'Internal Server Error';
+  }
 }

@@ -1,16 +1,13 @@
 {
-  "disabled": false,
+  "disabled": true,
   "bindings": [
     {
       "authLevel": "anonymous",
-      "route": "Role/GetRoles",
+      "route": "public/activity_type",
       "type": "httpTrigger",
       "direction": "in",
       "name": "req",
-      "methods": [
-        "get",
-        "post"
-      ]
+      "methods": ["get"]
     },
     {
       "type": "http",

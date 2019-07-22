@@ -1,0 +1,462 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Azure Functions TypeScript Boilerplate"
+  },
+  "host": "localhost:7071/",
+  "basePath": "api/v1",
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "paths": {
+    "/public/activity_type": {
+      "get": {
+        "operationId": "public_activity_type",
+        "tags": [
+          "public"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Authorization",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/GetActivityTypeOutput"
+            }
+          }
+        }
+      }
+    },
+    "/Auth/SignUp": {
+      "get": {
+        "operationId": "Auth_SignUp",
+        "tags": [
+          "Auth"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Authorization",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "input",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SignUpInput"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "post": {
+        "operationId": "Auth_SignUp",
+        "tags": [
+          "Auth"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Authorization",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "input",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SignUpInput"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/public/conditions": {
+      "get": {
+        "operationId": "public_conditions",
+        "tags": [
+          "public"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Authorization",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/GetConditionsOutput"
+            }
+          }
+        }
+      }
+    },
+    "/public/currencies": {
+      "get": {
+        "operationId": "public_currencies",
+        "tags": [
+          "public"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Authorization",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/GetCurrenciesOutput"
+            }
+          }
+        }
+      }
+    },
+    "/public/listing_types": {
+      "get": {
+        "operationId": "public_listing_types",
+        "tags": [
+          "public"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Authorization",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/GetListingTypesOutput"
+            }
+          }
+        }
+      }
+    },
+    "/public/trading_sites": {
+      "get": {
+        "operationId": "public_trading_sites",
+        "tags": [
+          "public"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Authorization",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/GetTradingSiteOutput"
+            }
+          }
+        }
+      }
+    },
+    "/SwaggerDoc": {
+      "get": {
+        "operationId": "SwaggerDoc",
+        "tags": [
+          "SwaggerDoc"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Authorization",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "SignUpInput": {
+      "type": "object",
+      "properties": {
+        "password": {
+          "type": "string",
+          "description": "@IsDefined() @MinLength(6)"
+        },
+        "fn": {
+          "type": "string",
+          "description": "@IsDefined() @IsAlpha()"
+        },
+        "ln": {
+          "type": "string",
+          "description": "@IsDefined() @IsAlpha()"
+        },
+        "brandName": {
+          "type": "string",
+          "description": "@IsOptional()"
+        },
+        "workEmail": {
+          "type": "string",
+          "description": "@IsDefined() @IsEmail()"
+        },
+        "businessName": {
+          "type": "string",
+          "description": "@IsOptional()"
+        },
+        "phone": {
+          "type": "string",
+          "description": "@IsOptional() @IsPhoneNumber('ZZ')"
+        }
+      }
+    },
+    "Output": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "data": {
+          "type": "NonNullable<T>"
+        },
+        "message": {
+          "type": "string"
+        },
+        "dateTime": {
+          "type": "string"
+        }
+      }
+    },
+    "ActivityTypeDto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "GetActivityTypeOutput": {
+      "type": "object",
+      "properties": {
+        "counts": {
+          "type": "number"
+        },
+        "sites": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ActivityTypeDto"
+          }
+        }
+      }
+    },
+    "CategoryDto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "GetCategoryOutput": {
+      "type": "object",
+      "properties": {
+        "counts": {
+          "type": "number"
+        },
+        "categories": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CategoryDto"
+          }
+        }
+      }
+    },
+    "ConditionDto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "GetConditionsOutput": {
+      "type": "object",
+      "properties": {
+        "counts": {
+          "type": "number"
+        },
+        "sites": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ConditionDto"
+          }
+        }
+      }
+    },
+    "CurrencyDto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "GetCurrenciesOutput": {
+      "type": "object",
+      "properties": {
+        "counts": {
+          "type": "number"
+        },
+        "sites": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CurrencyDto"
+          }
+        }
+      }
+    },
+    "ListingTypeDto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "GetListingTypesOutput": {
+      "type": "object",
+      "properties": {
+        "counts": {
+          "type": "number"
+        },
+        "sites": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ListingTypeDto"
+          }
+        }
+      }
+    },
+    "TradingSiteDto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "GetTradingSiteOutput": {
+      "type": "object",
+      "properties": {
+        "counts": {
+          "type": "number"
+        },
+        "sites": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TradingSiteDto"
+          }
+        }
+      }
+    }
+  }
+}

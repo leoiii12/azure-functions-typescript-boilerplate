@@ -1,8 +1,17 @@
 {
   "version": "2.0",
-  "logging":{
+  "extensions": {
+    "http": {
+      "routePrefix": "api/v1"
+    }
+  },
+  "logging": {
+    "fileLoggingMode": "always",
     "logLevel": {
-      "default": "Warning"
+      "default": "Information",
+      "Host": "Error",
+      "Function": "Error",
+      "Host.Aggregator": "Information"
     }
   }
 }

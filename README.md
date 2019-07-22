@@ -13,7 +13,13 @@ This project helps set up so many things that I encountered when developing proj
 [swagger](https://swagger.io) + [ts-morph](https://www.npmjs.com/package/ts-morph), automatically generate the swagger document `doc/versions/staging.json`<br>
 [dotenv](https://www.npmjs.com/package/dotenv), `.env`<br>
 
+### Before Start
+
+- Set .env parameters according to ormconfig DB-Profiles
+- 
+
 ## Configs
+
 `src/local.settings.json` for `AUTH_SECRET`<br>
 `ormconfig.json` for your DB
 
@@ -27,10 +33,6 @@ This project helps set up so many things that I encountered when developing proj
 `src/func/swagger-doc`, a HTML endpoint to see the generated swagger doc<br>
 
 ## Getting started 
-```bash
-docker run --name mssql -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=yourStrong(!)Password' -p 1433:1433 -d microsoft/mssql-server-linux:2017-latest
-docker exec -it mssql /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 'yourStrong(!)Password'
-```
 
 ```sql
 CREATE DATABASE [boilerplate-database];
@@ -66,7 +68,7 @@ export async function getRoles(_: any, roles?: Role[]): Promise<GetRolesOutput> 
 // 5. The entry function must end with `Func` or the swagger doc generator cannot find the entry point
 export async function getRolesFunc(context: Context) {
   // 1. Wrap your logic in Function.run
-  context.res = await Func.run0(
+  context.res = await Func.runWithoutInput(
     context,
     getRoles,
     // 2. You can define the permitted roles to this function 
@@ -117,7 +119,7 @@ export async function addDevice(input: AddDeviceInput): Promise<AddDeviceOutput>
 }
 
 export async function deviceAddDeviceFunc(context: Context) {
-  context.res = await Func.run1(
+  context.res = await Func.runWithInput(
     context,
     addDevice,
     // The input type
@@ -127,3 +129,5 @@ export async function deviceAddDeviceFunc(context: Context) {
     }),
   );
 }
+
+```

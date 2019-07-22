@@ -3,13 +3,12 @@
   "bindings": [
     {
       "authLevel": "anonymous",
-      "route": "HelloWorld",
+      "route": "public/conditions",
       "type": "httpTrigger",
       "direction": "in",
       "name": "req",
       "methods": [
-        "get",
-        "post"
+        "get"
       ]
     },
     {

@@ -29,16 +29,17 @@ const templateHtml = `
 </head>
 
 <body>
-  <div id="swagger-ui"></div>
+  <div>
+    <div id="swagger-ui"></div>
+  </div>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/3.2.2/swagger-ui-bundle.js"> </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/3.2.2/swagger-ui-standalone-preset.js"> </script>
   <script>
     window.onload = function () {
-      var specJson = \`\${specJson}\`;
-
       // Build a system
       const ui = SwaggerUIBundle({
-        spec: JSON.parse(specJson),
+        spec: JSON.parse(\`$___specJson___\`),
         dom_id: '#swagger-ui',
         deepLinking: true,
         presets: [

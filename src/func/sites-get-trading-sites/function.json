@@ -3,13 +3,12 @@
   "bindings": [
     {
       "authLevel": "anonymous",
-      "route": "Device/AddDevice",
+      "route": "public/trading_sites",
       "type": "httpTrigger",
       "direction": "in",
       "name": "req",
       "methods": [
-        "get",
-        "post"
+        "get"
       ]
     },
     {

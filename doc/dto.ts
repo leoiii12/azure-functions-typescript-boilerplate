@@ -48,7 +48,7 @@ function typeToMemberEntry(node: PropertyDeclaration | ParameterDeclaration) {
 
   // Array
   if (type.isArray()) {
-    const arrayType = type.getArrayType() as Type;
+    const arrayType = type.getArrayElementType() as Type;
 
     // Enum Array
     const symbol = arrayType.getSymbol();

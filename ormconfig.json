@@ -2,11 +2,12 @@
   {
     "name": "default",
     "type": "mssql",
-    "host": "",
-    "username": "",
-    "password": "",
-    "database": "",
-    "logging": true,
+    "host": "easyshop.database.windows.net",
+    "username": "easyshop",
+    "password": "odiF2t11#",
+    "database": "EasyShop",
+    "port": 1433,
+    "logging": false,
     "options": {
       "encrypt": true
     },
@@ -26,24 +27,12 @@
     }
   },
   {
-    "name": "default-dist",
+    "name": "default-dev",
     "type": "mssql",
-    "host": "",
-    "username": "",
-    "password": "",
-    "database": "",
-    "logging": false,
-    "options": {
-      "encrypt": true
-    }
-  },
-  {
-    "name": "dev",
-    "type": "mssql",
-    "host": "localhost",
-    "username": "sa",
-    "password": "yourStrong(!)Password",
-    "database": "boilerplate-database",
+    "host": "MOJTABA-PC\\SQLEXPRESS01",
+    "username": "easy_shop",
+    "password": "E@syshop2019",
+    "database": "EasyShop",
     "logging": true,
     "options": {
       "encrypt": true

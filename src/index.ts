@@ -5,6 +5,16 @@ if (process.env.NODE_ENV === 'Development') {
   dotenv.config({
     path: path.resolve('../.env/dev.env'),
   });
+} else if (process.env.NODE_ENV === 'Test') {
+  dotenv.config({
+    path: path.resolve('../.env/test.env'),
+  });
+} else {
+  dotenv.config({
+    path: path.resolve('../.env/prod.env'),
+  });
+  process.env.NODE_ENV = 'Production';
+  process.env.DB_PROFILE = 'default-dis';
 }
 
 // In this project,

@@ -3,13 +3,12 @@
   "bindings": [
     {
       "authLevel": "anonymous",
-      "route": "Auth/Authenticate",
+      "route": "public/currencies",
       "type": "httpTrigger",
       "direction": "in",
       "name": "req",
       "methods": [
-        "get",
-        "post"
+        "get"
       ]
     },
     {
