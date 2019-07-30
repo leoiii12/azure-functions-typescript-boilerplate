@@ -1,16 +1,22 @@
 import { BaseEntity, Column, Entity, Index, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn, RelationId } from 'typeorm';
-import { Currency } from './currency';
-import { TradingSite } from './trading_site';
+import { Currency, TradingSite } from '../index';
 
 @Entity('currency_mappings', { schema: 'mappings' })
 export class CurrencyMappings {
 
-  @ManyToOne(type => Currency, currency => currency.currencyMappingss, { primary: true, nullable: false })
-  @JoinColumn({ name: 'currency_id' })
-  currency: Currency | null;
+  @PrimaryColumn({ nullable: false ,  name: 'currency_id' })
+  currencyID: number;
 
+  @ManyToOne(type => Currency)
+  @JoinColumn({ name: 'currency_id' })
+  currency: Currency ;
+
+  @PrimaryColumn({ nullable: false ,  name: 'trading_site_id' })
+  tradingSiteID: number;
+
+  @ManyToOne(type => TradingSite)
   @JoinColumn({ name: 'trading_site_id' })
-  tradingSite: TradingSite | null;
+  tradingSite: TradingSite;
 
   @Column('nchar', {
     nullable: false,

@@ -1,19 +1,23 @@
 import { BaseEntity, Column, Entity, Index, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn, RelationId } from 'typeorm';
-import { TradingSite } from './trading_site';
-import { Items } from './items';
-import { User } from './user';
-import { ListingType } from './listing_type';
+import { TradingSite, Items, User, ListingType } from '../index';
 
 @Entity('site_specific_listing_info', { schema: 'listings' })
 export class SiteSpecificListingInfo {
 
-  @ManyToOne(type => TradingSite, tradingSite => tradingSite.siteSpecificListingInfos, { primary: true, nullable: false })
-  @JoinColumn({ name: 'trading_site_id' })
-  tradingSite: TradingSite | null;
+  @PrimaryColumn({ nullable: false ,  name: 'trading_site_id' })
+  tradingSiteID: number;
 
-  @ManyToOne(type => Items, items => items.siteSpecificListingInfos, { primary: true, nullable: false })
-  @JoinColumn({ name: 'item_id' })
-  item: Items | null;
+  @ManyToOne(type => TradingSite)
+  @JoinColumn({ name: 'trading_site_id' })
+  tradingSite: TradingSite ;
+
+  @PrimaryColumn('nvarchar', {
+    nullable: false,
+    length: 100,
+    name: 'item_id',
+    primary: true,
+  })
+  itemID: string;
 
   @Column('decimal', {
     nullable: false,
@@ -45,13 +49,12 @@ export class SiteSpecificListingInfo {
   })
   itemUrl: string | null;
 
-  @ManyToOne(type => User, user => user.siteSpecificListingInfos, {})
-  @JoinColumn({ name: 'user_id' })
-  user: User | null;
+  @Column({ nullable: false ,  name: 'last_listing_type_id' })
+  lastListingTypeID: number;
 
-  @ManyToOne(type => ListingType, listingType => listingType.siteSpecificListingInfos, {})
+  @ManyToOne(type => ListingType)
   @JoinColumn({ name: 'last_listing_type_id' })
-  lastListingType: ListingType | null;
+  lastListingType: ListingType;
 
 }
 

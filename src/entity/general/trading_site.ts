@@ -1,11 +1,10 @@
 import { BaseEntity, Column, Entity, Index, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn, RelationId } from 'typeorm';
-import { ConditionMappings } from './condition_mappings';
-import { Items } from './items';
+import { CategoryMappings, ConditionMappings, CurrencyMappings, ListingOrderItems, ListingTypeMappings, SiteSpecificListingInfo  } from '../index';
 
-@Entity('condition', { schema: 'general' })
-export class Condition {
+@Entity('trading_site', { schema: 'general' })
+export class TradingSite {
 
-  @Column('int', {
+  @PrimaryColumn('int', {
     nullable: false,
     primary: true,
     name: 'id',
@@ -26,18 +25,19 @@ export class Condition {
   })
   desc: string | null;
 
-  @OneToMany(type => ConditionMappings, conditionMappings => conditionMappings.condition)
-  conditionMappings: ConditionMappings[];
-
-  @OneToMany(type => Items, items => items.condition)
-  items: Items[];
-
 }
 
-export class ConditionDto {
+export class TradingSiteDto {
 
   constructor(
     public id: number,
-    public name: string) {
+    public name: string,
+    ) {
+  }
+  static from(site: TradingSite): TradingSiteDto {
+    return new TradingSiteDto(
+     site.id,
+     site.name,
+    );
   }
 }

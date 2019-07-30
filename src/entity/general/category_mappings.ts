@@ -1,13 +1,15 @@
 import { BaseEntity, Column, Entity, Index, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn, RelationId } from 'typeorm';
-import { Category } from './category';
-import { TradingSite } from './trading_site';
+import { Category, TradingSite } from '../index';
 
 @Entity('category_mappings', { schema: 'mappings' })
 export class CategoryMappings {
 
-  @ManyToOne(type => Category, category => category.categoryMappingss, { primary: true, nullable: false })
+  @PrimaryColumn({ nullable: false ,  name: 'category_id' })
+  categoryID: number;
+
+  @ManyToOne(type => Category)
   @JoinColumn({ name: 'category_id' })
-  category: Category | null;
+  category: Category;
 
   @Column('nchar', {
     nullable: false,
@@ -16,9 +18,12 @@ export class CategoryMappings {
   })
   categorySiteSpecificID: string;
 
-  @ManyToOne(type => TradingSite, tradingSite => tradingSite.categoryMappingss, { primary: true, nullable: false })
+  @PrimaryColumn({ nullable: false ,  name: 'trading_site_id' })
+  tradingSiteID: number;
+
+  @ManyToOne(type => TradingSite)
   @JoinColumn({ name: 'trading_site_id' })
-  tradingSite: TradingSite | null;
+  tradingSite: TradingSite;
 
 }
 

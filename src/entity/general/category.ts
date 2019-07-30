@@ -1,13 +1,13 @@
 import { BaseEntity, Column, Entity, Index, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn, RelationId } from 'typeorm';
-import { CategoryMappings } from './category_mappings';
-import { Items } from './items';
+import { CategoryMappings, Items } from '../index';
 
 @Entity('category', { schema: 'general' })
 export class Category {
 
-  @Column('int', {
+  @PrimaryColumn('int', {
     nullable: false,
     primary: true,
+    generated: true,
     name: 'id',
   })
   id: number;
@@ -19,18 +19,9 @@ export class Category {
   })
   name: string;
 
-  @ManyToOne(type => Category, category => category.categories, {})
+  @ManyToOne(type => Category, { nullable:true })
   @JoinColumn({ name: 'parentid' })
   parent: Category | null;
-
-  @OneToMany(type => Category, category => category.parent)
-  categories: Category[];
-
-  @OneToMany(type => CategoryMappings, categoryMappings => categoryMappings.category)
-  categoryMappingss: CategoryMappings[];
-
-  @OneToMany(type => Items, items => items.category)
-  items: Items[];
 
 }
 

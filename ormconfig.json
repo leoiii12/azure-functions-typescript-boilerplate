@@ -1,5 +1,31 @@
 [
-
+  {
+    "name": "default",
+    "type": "mssql",
+    "host": "easyshop.database.windows.net",
+    "username": "easyshop",
+    "password": "odiF2t11#",
+    "database": "EasyShop",
+    "port": 1433,
+    "logging": false,
+    "options": {
+      "encrypt": true
+    },
+    "entities": [
+      "src/entity/**/*.ts"
+    ],
+    "migrations": [
+      "src/migration/**/*.ts"
+    ],
+    "subscribers": [
+      "src/subscriber/**/*.ts"
+    ],
+    "cli": {
+      "entitiesDir": "src/entity",
+      "migrationsDir": "src/migration",
+      "subscribersDir": "src/subscriber"
+    }
+  },
   {
     "name": "default-dev",
     "type": "mssql",

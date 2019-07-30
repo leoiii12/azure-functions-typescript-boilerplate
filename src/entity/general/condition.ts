@@ -1,13 +1,13 @@
 import { BaseEntity, Column, Entity, Index, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn, RelationId } from 'typeorm';
-import { CurrencyMappings } from './currency_mappings';
-import { Items } from './items';
+import { ConditionMappings, Items } from '../index';
 
-@Entity('currency', { schema: 'general' })
-export class Currency {
+@Entity('condition', { schema: 'general' })
+export class Condition {
 
-  @Column('int', {
+  @PrimaryColumn('int', {
     nullable: false,
     primary: true,
+    generated: true,
     name: 'id',
   })
   id: number;
@@ -19,22 +19,16 @@ export class Currency {
   })
   name: string;
 
-  @Column('varchar', {
+  @Column('nvarchar', {
     nullable: true,
     length: 100,
     name: 'desc',
   })
   desc: string | null;
 
-  @OneToMany(type => CurrencyMappings, currencyMappings => currencyMappings.currency)
-  currencyMappingss: CurrencyMappings[];
-
-  @OneToMany(type => Items, items => items.cur)
-  itemss: Items[];
-
 }
 
-export class CurrencyDto {
+export class ConditionDto {
 
   constructor(
     public id: number,

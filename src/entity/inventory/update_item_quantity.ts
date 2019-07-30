@@ -1,25 +1,22 @@
 import { BaseEntity, Column, Entity, Index, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn, RelationId } from 'typeorm';
-import { Items } from './items';
-import { User } from './user';
+import { Items, User } from '../index';
 
 @Entity('update_item_quantity', { schema: 'inventory' })
 export class UpdateItemQuantity {
 
-  @ManyToOne(type => Items, items => items.updateItemQuantities, { primary: true, nullable: false })
-  @JoinColumn({ name: 'item_id' })
-  item: Items | null;
-
-  @Column('datetime2', {
+  @PrimaryColumn('nvarchar', {
     nullable: false,
-    primary: true,
+    length: 100,
+    name: 'item_id',
+  })
+  itemID: string;
+
+  @PrimaryColumn('datetime2', {
+    nullable: false,
     default: () => 'getdate()',
     name: 'action_time',
   })
   actionTime: Date;
-
-  @ManyToOne(type => User, user => user.updateItemQuantitys, { nullable: false })
-  @JoinColumn({ name: 'user_id' })
-  user: User | null;
 
   @Column('decimal', {
     nullable: false,

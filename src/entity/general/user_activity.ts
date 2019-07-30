@@ -1,15 +1,17 @@
 import { BaseEntity, Column, Entity, Index, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn, RelationId } from 'typeorm';
-import { User } from './user';
-import { ActivityType } from './activity_type';
+import { User, ActivityType } from '../index';
 
 @Entity('user_activity', { schema: 'auth' })
 export class UserActivity {
 
-  @ManyToOne(type => User, user => user.userActivitys, { primary: true, nullable: false })
-  @JoinColumn({ name: 'user_id' })
-  user: User | null;
+  @PrimaryColumn({ nullable: false ,  name: 'user_id' })
+  userID: string;
 
-  @Column('datetime2', {
+  @ManyToOne(type => User)
+  @JoinColumn({ name: 'user_id' })
+  user: User;
+
+  @PrimaryColumn('datetime2', {
     nullable: false,
     default: () => 'getdate()',
     name: 'event_time',
@@ -23,9 +25,12 @@ export class UserActivity {
   })
   description: string | null;
 
-  @ManyToOne(type => ActivityType, activityType => activityType.userActivitys, {})
+  @Column({ nullable: false ,  name: 'activity_id' })
+  activityID: number;
+
+  @ManyToOne(type => ActivityType)
   @JoinColumn({ name: 'activity_id' })
-  activity: ActivityType | null;
+  activity: ActivityType;
 
 }
 

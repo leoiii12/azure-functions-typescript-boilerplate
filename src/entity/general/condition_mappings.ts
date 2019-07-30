@@ -1,13 +1,15 @@
 import { BaseEntity, Column, Entity, Index, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn, RelationId } from 'typeorm';
-import { Condition } from './condition';
-import { TradingSite } from './trading_site';
+import { Condition, TradingSite } from '../index';
 
 @Entity('condition_mappings', { schema: 'mappings' })
 export class ConditionMappings {
 
-  @ManyToOne(type => Condition, condition => condition.conditionMappings, { primary: true, nullable: false, })
+  @PrimaryColumn({ nullable: false ,  name: 'condition_id' })
+  conditionID: number;
+
+  @ManyToOne(type => Condition)
   @JoinColumn({ name: 'condition_id' })
-  condition: Condition | null;
+  condition: Condition;
 
   @Column('nchar', {
     nullable: false,
@@ -16,9 +18,12 @@ export class ConditionMappings {
   })
   conditionSiteSpecificID: string;
 
-  @ManyToOne(type => TradingSite, tradingSite => tradingSite.conditionMappingss, { primary: true, nullable: false })
+  @PrimaryColumn({ nullable: false ,  name: 'trading_site_id'})
+  tradingSiteID: number;
+
+  @ManyToOne(type => TradingSite)
   @JoinColumn({ name: 'trading_site_id' })
-  tradingSite: TradingSite | null;
+  tradingSite: TradingSite;
 
 }
 export class ConditionMappingsDto {

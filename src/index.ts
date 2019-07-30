@@ -14,7 +14,7 @@ if (process.env.NODE_ENV === 'Development') {
     path: path.resolve('../.env/prod.env'),
   });
   process.env.NODE_ENV = 'Production';
-  process.env.DB_PROFILE = 'default-dis';
+  process.env.DB_PROFILE = 'default';
 }
 
 // In this project,

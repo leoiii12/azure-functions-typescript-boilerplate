@@ -1,19 +1,22 @@
 import { BaseEntity, Column, Entity, Index, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn, RelationId } from 'typeorm';
-import { ListingOrder } from './listing_order';
-import { Items } from './items';
-import { ListingType } from './listing_type';
-import { TradingSite } from './trading_site';
+import { ListingOrder, Items, TradingSite, ListingType  } from '../index';
 
 @Entity('listing_order_items', { schema: 'listings' })
 export class ListingOrderItems {
 
-  @ManyToOne(type => ListingOrder, listingOrder => listingOrder.listingOrderItemss, { primary: true, nullable: false })
-  @JoinColumn({ name: 'oreder_id' })
-  oreder: ListingOrder | null;
+  @PrimaryColumn({ nullable: false ,  name: 'oreder_id' })
+  orederID: string;
 
-  @ManyToOne(type => Items, items => items.listingOrderItems, { primary: true, nullable: false })
-  @JoinColumn({ name: 'item_id' })
-  item: Items | null;
+  @ManyToOne(type => ListingOrder, listingOrder => listingOrder.listingOrderItems)
+  @JoinColumn({ name: 'oreder_id' })
+  oreder: ListingOrder;
+
+  @PrimaryColumn('nvarchar', {
+    nullable: false,
+    length: 100,
+    name: 'item_id',
+  })
+  itemID: string;
 
   @Column('decimal', {
     nullable: false,
@@ -31,13 +34,19 @@ export class ListingOrderItems {
   })
   price: number;
 
-  @ManyToOne(type => ListingType, listingType => listingType.listingOrderItemss, { nullable: false })
-  @JoinColumn({ name: 'listing_type_id' })
-  listingType: ListingType | null;
+  @Column({ nullable: false ,  name: 'listing_type_id' })
+  listingTypeID: number;
 
-  @ManyToOne(type => TradingSite, tradingSite => tradingSite.listingOrderItemss, { nullable: false })
+  @ManyToOne(type => ListingType)
+  @JoinColumn({ name: 'listing_type_id' })
+  listingType: ListingType ;
+
+  @Column({ nullable: false ,  name: 'trading_site_id' })
+  tradingSiteID: number;
+
+  @ManyToOne(type => TradingSite)
   @JoinColumn({ name: 'trading_site_id' })
-  tradingSite: TradingSite | null;
+  tradingSite: TradingSite ;
 
   @Column('text', {
     nullable: true,

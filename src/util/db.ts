@@ -1,5 +1,4 @@
-import { Connection, createConnection, getConnectionOptions, AfterInsert } from 'typeorm';
-
+import { Connection, createConnection, getConnectionOptions, AfterInsert, ConnectionOptionsReader } from 'typeorm';
 import { ENTITIES } from '@boilerplate/entity';
 
 export namespace DB {
@@ -11,8 +10,9 @@ export namespace DB {
       return connection;
     }
 
-    const connectionOptions = await getConnectionOptions(process.env.DB_PROFILE || 'default-dist');
-
+    // const connectionOptions = await getConnectionOptions(process.env.DB_PROFILE || 'default');
+    const connectionReader = await new ConnectionOptionsReader({ root:'.', configName:'ormconfig.json' });
+    const connectionOptions = await connectionReader.get(process.env.DB_PROFILE || 'default');
     Object.assign(connectionOptions, {
       entities: ENTITIES,
     });
@@ -21,5 +21,4 @@ export namespace DB {
 
     return connection;
   }
-
 }

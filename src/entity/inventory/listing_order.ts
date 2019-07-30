@@ -1,6 +1,5 @@
 import { BaseEntity, Column, Entity, Index, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn, RelationId } from 'typeorm';
-import { User } from './user';
-import { ListingOrderItems } from './listing_order_items';
+import { User, ListingOrderItems } from '../index';
 
 @Entity('listing_order', { schema: 'listings' })
 export class ListingOrder {
@@ -19,15 +18,18 @@ export class ListingOrder {
   })
   orderComment: string | null;
 
-  @ManyToOne(type => User, user => user.listingOrders, { nullable: false })
+  @Column({ nullable: false ,  name: 'user_id' })
+  userID: string;
+
+  @ManyToOne(type => User)
   @JoinColumn({ name: 'user_id' })
-  user: User | null;
+  user: User;
 
   @PrimaryGeneratedColumn()
   id: string;
 
   @OneToMany(type => ListingOrderItems, listingOrderItems => listingOrderItems.oreder)
-  listingOrderItemss: ListingOrderItems[];
+  listingOrderItems: ListingOrderItems[];
 
 }
 

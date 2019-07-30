@@ -1,5 +1,5 @@
 import { BaseEntity, Column, Entity, Index, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn, RelationId } from 'typeorm';
-import { Items } from './items';
+import { Items } from '../index';
 
 @Entity('item_details', { schema: 'inventory' })
 export class ItemDetails {
@@ -18,13 +18,15 @@ export class ItemDetails {
   })
   itemSpecificDesc: string;
 
-  @ManyToOne(type => Items, items => items.itemDetails, { nullable: false })
-  @JoinColumn({ name: 'item_id' })
-  item: Items | null;
-
   @PrimaryGeneratedColumn()
   id: string;
 
+  @Column('nvarchar', {
+    nullable: false,
+    length: 100,
+    name: 'item_id',
+  })
+  itemID: string;
 }
 export class ItemDetailsDto {
 

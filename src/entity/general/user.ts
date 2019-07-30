@@ -1,21 +1,23 @@
 import { BaseEntity, Column, Entity, Index, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn, RelationId } from 'typeorm';
-import { Items } from './items';
-import { ListingOrder } from './listing_order';
-import { LoginHistory } from './login_history';
-import { RefreshToken } from './refresh_token';
-import { SiteSpecificListingInfo } from './site_specific_listing_info';
-import { UpdateItemQuantity } from './update_item_quantity';
-import { UserActivity } from './user_activity';
+import { UserActivity, RefreshToken, ListingOrder, LoginHistory, SiteSpecificListingInfo, UpdateItemQuantity, Items } from '../index';
 
 export enum Role {
   Users = 1000,
   Admins = 9999,
 }
 @Entity('user', { schema: 'auth' })
-export class User {
+export class  User {
 
-  @PrimaryGeneratedColumn()
-  id: string;
+  // @PrimaryGeneratedColumn()
+  // id: string;
+
+  @PrimaryColumn('uniqueidentifier', {
+    nullable:false,
+    primary:true,
+    default: () => 'newid()',
+    name:'id',
+  })
+  id:string;
 
   @Column('nvarchar', {
     nullable: false,
@@ -94,27 +96,6 @@ export class User {
     name: 'phone',
   })
   phone: string | null;
-
-  @OneToMany(type => Items, items => items.user)
-  items: Items[];
-
-  @OneToMany(type => ListingOrder, listingOrder => listingOrder.user)
-  listingOrders: ListingOrder[];
-
-  @OneToMany(type => LoginHistory, loginHistory => loginHistory.user)
-  loginHistorys: LoginHistory[];
-
-  @OneToMany(type => RefreshToken, refreshToken => refreshToken.user)
-  refreshTokens: RefreshToken[];
-
-  @OneToMany(type => SiteSpecificListingInfo, siteSpecificListingInfo => siteSpecificListingInfo.user)
-  siteSpecificListingInfos: SiteSpecificListingInfo[];
-
-  @OneToMany(type => UpdateItemQuantity, updateItemQuantity => updateItemQuantity.user)
-  updateItemQuantitys: UpdateItemQuantity[];
-
-  @OneToMany(type => UserActivity, userActivity => userActivity.user)
-  userActivitys: UserActivity[];
 
 }
 

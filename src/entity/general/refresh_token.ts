@@ -1,23 +1,23 @@
 import { BaseEntity, Column, Entity, Index, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn, RelationId } from 'typeorm';
-import { User } from './user';
+import { User } from '../index';
 
 @Entity('refresh_token', { schema: 'auth' })
 @Index('IX_refresh_token', ['refreshToken'], { unique: true })
 export class RefreshToken {
 
   @Column('nvarchar', {
-    nullable: true,
+    nullable: false,
     length: 150,
     name: 'refresh_token',
   })
-  refreshToken: string | null;
+  refreshToken: string ;
 
   @Column('nvarchar', {
-    nullable: true,
+    nullable: false,
     length: 150,
     name: 'user_agent_hash',
   })
-  userAgentHash: string | null;
+  userAgentHash: string;
 
   @Column('datetime2', {
     nullable: false,
@@ -26,9 +26,12 @@ export class RefreshToken {
   })
   generatedTime: Date;
 
-  @ManyToOne(type => User, user => user.refreshTokens, { primary: true, nullable: false })
+  @PrimaryColumn({ nullable: false ,  name: 'user_id' })
+  userID: string;
+
+  @ManyToOne(type => User)
   @JoinColumn({ name: 'user_id' })
-  user: User | null;
+  user: User;
 
 }
 
