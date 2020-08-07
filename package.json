@@ -43,7 +43,7 @@
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "class-transformer": "^0.2.0",
+    "class-transformer": "^0.3.1",
     "class-transformer-validator": "^0.7.1",
     "class-validator": "^0.9.1",
     "dotenv": "^8.0.0",
