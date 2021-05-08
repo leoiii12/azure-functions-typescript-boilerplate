@@ -51,7 +51,7 @@
     "moment": "^2.24.0",
     "mssql": "^5.1.0",
     "reflect-metadata": "^0.1.12",
-    "typeorm": "^0.2.16"
+    "typeorm": "^0.2.25"
   },
   "jest": {
     "moduleFileExtensions": [
