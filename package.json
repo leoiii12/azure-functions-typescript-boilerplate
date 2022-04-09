@@ -48,7 +48,7 @@
     "class-validator": "^0.9.1",
     "dotenv": "^8.0.0",
     "jsonwebtoken": "^8.5.1",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "mssql": "^5.1.0",
     "reflect-metadata": "^0.1.12",
     "typeorm": "^0.2.16"
